@@ -1,0 +1,28 @@
+name: Apply Prototype 0.1 Final
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'finalize-p01.py'
+      - '.github/workflows/apply-final-p01.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply final variation pass
+        run: python3 finalize-p01.py
+      - name: Commit Prototype 0.1 Final
+        run: |
+          if git diff --quiet -- app.js; then
+            echo 'No finalization changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js
+          git commit -m 'Finalize Prototype 0.1 content variation'
+          git push
