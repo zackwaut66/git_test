@@ -36,6 +36,12 @@ on:
       - 'ui-v24.js'
       - 'ui-v24.css'
       - 'ui-v24-fixes.css'
+      - 'polish-v25.js'
+      - 'polish-v25.css'
+      - 'enclave-v26.js'
+      - 'enclave-v26.css'
+      - 'kingdom-v27.js'
+      - 'kingdom-v27.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -50,6 +56,7 @@ on:
       - 'huntmaster-smoke.mjs'
       - 'guild-smoke.mjs'
       - 'ui-smoke.mjs'
+      - 'kingdom-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -95,13 +102,15 @@ jobs:
         run: node guild-smoke.mjs
       - name: Run production UI smoke test
         run: node ui-smoke.mjs
+      - name: Run Enclave expansion smoke test
+        run: node kingdom-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v24
+          name: prototype-audit-v27
           path: |
             audit-1000-results.json
             audit-title.png
@@ -144,12 +153,14 @@ jobs:
             ui-v24-inventory.png
             ui-v24-guild.png
             ui-v24-combat.png
+            kingdom-v27-domain-start.png
+            kingdom-v27-domain-built.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v24
+          name: prototype-deploy-source-v27
           path: |
             index.html
             app.js
@@ -184,6 +195,12 @@ jobs:
             ui-v24.js
             ui-v24.css
             ui-v24-fixes.css
+            polish-v25.js
+            polish-v25.css
+            enclave-v26.js
+            enclave-v26.css
+            kingdom-v27.js
+            kingdom-v27.css
             assets/
             icon.svg
             manifest.webmanifest
