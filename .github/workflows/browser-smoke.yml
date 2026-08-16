@@ -25,6 +25,8 @@ on:
       - 'hunters-v18.css'
       - 'combat-v19.js'
       - 'combat-v19.css'
+      - 'map-v20.js'
+      - 'map-v20.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -34,6 +36,7 @@ on:
       - 'facilities-smoke.mjs'
       - 'hunters-smoke.mjs'
       - 'combat-controls-smoke.mjs'
+      - 'map-intel-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -69,13 +72,15 @@ jobs:
         run: node hunters-smoke.mjs
       - name: Run Tactical Pause combat controls smoke test
         run: node combat-controls-smoke.mjs
+      - name: Run March intelligence smoke test
+        run: node map-intel-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v19
+          name: prototype-audit-v20
           path: |
             audit-1000-results.json
             audit-title.png
@@ -104,12 +109,13 @@ jobs:
             scout-tower-v17-preview.png
             hunter-dossier-v18-preview.png
             combat-v19-tactical-pause.png
+            map-v20-intel-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v19
+          name: prototype-deploy-source-v20
           path: |
             index.html
             app.js
@@ -133,6 +139,8 @@ jobs:
             hunters-v18.css
             combat-v19.js
             combat-v19.css
+            map-v20.js
+            map-v20.css
             assets/
             icon.svg
             manifest.webmanifest
