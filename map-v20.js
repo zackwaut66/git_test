@@ -3,7 +3,7 @@
 const ROOT=document.querySelector('#app');
 if(!ROOT)return;
 const INTEL=[
-  {name:'FORSaken FARMSTEAD',threat:'LOW',hostiles:'Feral · Lurker',reward:'28 Coin · 18 Iron · 3 Salvage'},
+  {name:'FORSAKEN FARMSTEAD',threat:'LOW',hostiles:'Feral · Lurker',reward:'28 Coin · 18 Iron · 3 Salvage'},
   {name:'HOLLOW CAUSEWAY',threat:'GUARDED',hostiles:'Reaver · Rifleman · Spotter',reward:'38 Coin · 17 Iron · 7 Salvage'},
   {name:'SAINT ORRA CHAPEL',threat:'SEVERE',hostiles:'Husk · Thrall · Bell Hand',reward:'48 Coin · 19 Iron · 9 Salvage'},
   {name:'PENITENT WARDEN',threat:'BOSS',hostiles:'Warden · Servitors',reward:'90 Coin · 24 Iron · 14 Salvage'}
