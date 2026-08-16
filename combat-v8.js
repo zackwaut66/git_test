@@ -6,6 +6,7 @@ const allyArt=name=>{const k={Vanguard:'v',Duelist:'d',Physician:'p'}[name];cons
 const ENEMY={
  'Carrion Scavenger':'./assets/enemy-carrion-scavenger-v1.svg',
  'Cinder Scavenger':'./assets/enemy-carrion-scavenger-v1.svg',
+ 'Farmhand Thrall':'./assets/enemy-carrion-scavenger-v1.svg',
  'Ash Hound':'./assets/enemy-ash-hound-v1.svg',
  'Farmstead Lurker':'./assets/enemy-farmstead-lurker-v1.svg',
  'Grainhouse Lurker':'./assets/enemy-farmstead-lurker-v1.svg',
