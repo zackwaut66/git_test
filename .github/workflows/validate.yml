@@ -15,7 +15,9 @@ jobs:
         run: |
           node --check app.js
           node --check v7.js
+          node --check facilities-v17.js
           node --check browser-smoke.mjs
+          node --check facilities-smoke.mjs
           node --check audit-1000.mjs
       - name: Verify active build files
         run: |
@@ -24,10 +26,14 @@ jobs:
           test -f app.css
           test -f v7.js
           test -f v7.css
+          test -f facilities-v17.js
+          test -f facilities-v17.css
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
           test -f assets/hunter-physician-v2.svg
           grep -Eq 'app\.js\?v=[0-9]+' index.html
           grep -Eq 'v7\.js\?v=[0-9]+' index.html
           grep -Eq 'v7\.css\?v=[0-9]+' index.html
+          grep -Eq 'facilities-v17\.js\?v=[0-9]+' index.html
+          grep -Eq 'facilities-v17\.css\?v=[0-9]+' index.html
           grep -q 'v7-hunterhall' v7.js
