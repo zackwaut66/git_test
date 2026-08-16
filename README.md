@@ -1,4 +1,4 @@
-# The Bell Beneath Ash — Prototype 0.1d
+# The Bell Beneath Ash — Prototype 0.1 Final
 
 Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable region is **The Ashen Marches**.
 
@@ -6,7 +6,9 @@ Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. Th
 
 Enclave → prepare Hunters → fog-covered Marches → field discovery → formation combat → multi-item loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → unlock deeper territory → Penitent Warden.
 
-## Active build
+## Prototype status
+
+**Prototype 0.1 is feature-frozen and has passed its final stress-validation gate.**
 
 The playable application is consolidated into:
 
@@ -16,12 +18,12 @@ The playable application is consolidated into:
 - `sw.js`
 - `manifest.webmanifest`
 
-Older Prototype 0.1 module files remain in the repository for history but are no longer loaded by the live application.
+Older Prototype 0.1 module files remain in the repository for development history but are no longer loaded by the live application.
 
-## Implemented through 0.1d
+## Implemented in Prototype 0.1 Final
 
 - One-screen title/premise and mobile-first first-session flow
-- Persistent local browser save; 0.1d preserves the validated 0.1b save key
+- Persistent local browser save while preserving the validated Prototype 0.1 save key
 - Installable/offline-capable PWA shell
 - Spatial Enclave scene with Hunter Hall, Forge, Infirmary, Storehouse, Scout Tower and locked future Guild Hall
 - State-derived Directive system tied directly to progression gates
@@ -30,7 +32,8 @@ Older Prototype 0.1 module files remain in the repository for history but are no
 - Hunter XP and leveling
 - Four-node Ashen Marches progression with fog/locking
 - Forsaken Farmstead, Hollow Causeway, Saint Orra Chapel and Penitent Warden
-- Field discovery risk/reward events
+- Nine field-discovery risk/reward events across the three non-boss locations
+- Three tested combat-roster signatures per encounter: base plus two alternates
 - Front/back formation combat with automatic basic attacks
 - Focus targeting and shared Resolve
 - Focus, Sever, Brace and Field Treatment tactical interventions
@@ -39,37 +42,48 @@ Older Prototype 0.1 module files remain in the repository for history but are no
 - 3–4 equipment drops from normal victories; 5 from the Warden
 - Common, uncommon, rare and relic equipment
 - Weapon, Head, Armor and Charm slots
-- Random affixes
+- 33 tested equipment names including the Warden relic
+- 12 randomized affixes
 - Ashen Pilgrim set: 2pc attack bonus / 4pc starting Resolve bonus
 - Mourning Watch set: 2pc HP bonus / 4pc incoming-damage reduction
-- Direct per-Hunter loot comparison against the currently equipped item in the same slot
+- Direct per-Hunter loot comparison against the currently equipped same-slot item
 - Explicit ATK/HP deltas rather than a hidden generic power score
 - New-drop marking on freshly recovered equipment
 - Four-pip visual progress for both functioning equipment sets
 - Forge crafting and salvage economy
 - Coin, Iron and Salvage resources
 - Building upgrades with gameplay effects
-- More detailed scene SVGs for the Enclave, Farmstead, Causeway, Chapel, Warden and Marches map
+- Detailed vector prototype scenes for the Enclave, Farmstead, Causeway, Chapel, Warden and Marches map
 - Distinct Hunter/support silhouettes and differentiated enemy silhouettes, including a quadruped Ash Hound and enlarged Warden
-- Combat-state callouts, selected-target reticle, Hunter/Threat meters and clearer ability intent labels
+- Combat-state callouts, selected-target reticle, Hunter/Threat meters and readable ability intent labels
 - Front/back-row visual depth in combat composition
-- Contextual victory art using the actual cleared encounter environment
-- Mobile smoke testing and real-browser 1,000-playthrough audit in GitHub Actions
+- Contextual victory art using the cleared encounter environment
 
-## Current audited difficulty
+## Final stress validation
 
-The latest successful 1,000-run browser-connected 0.1d audit produced:
+The release gate ran **10,000 complete progression profiles** in real Chromium at a 390×844 mobile viewport, plus **500 inventory/economy mutation cycles**, **75 persistence reloads**, and **600 real DOM navigation clicks**.
 
-- Forsaken Farmstead: **99.5%** wins per attempt
-- Hollow Causeway: **64.8%**
-- Saint Orra Chapel: **67.3%**
-- Penitent Warden: **51.5%**
+Final result:
 
-Across four automated behavior profiles, 949 / 1,000 complete progression runs defeated the Warden within the audit retry cap. The run recorded zero browser errors, zero tested state-invariant failures, and zero progression deadlocks.
+- Browser/page errors: **0**
+- Tested state-invariant failures: **0**
+- Progression/combat-loop deadlocks: **0**
+- Persistence failures: **0 / 75**
+- Field-discovery coverage: **9 / 9**
+- Encounter-roster coverage: **3 / 3 for every encounter**
+- Equipment-name coverage: **33**
+- Affix coverage: **12 / 12**
+- Penitent Warden defeated within the stress retry cap: **9,663 / 10,000 profiles**
+- Final stress gate: **PASS**
 
-The 0.1d pass changes loot presentation and comparison, not combat math; numerical movement between 1,000-run samples is expected from randomized combat, drops and field events.
+Encounter win rates per attempt in the final 10,000-profile run:
 
-See `AUDIT_1000_P01D.md` for the current audit. Earlier audit files are retained as development history.
+- Forsaken Farmstead: **99.69%**
+- Hollow Causeway: **68.00%**
+- Saint Orra Chapel: **72.67%**
+- Penitent Warden: **58.88%**
+
+See `FINAL_STRESS_P01.md` for the full release validation. Earlier `AUDIT_1000_*` files are retained as tuning history.
 
 ## Current development playtest
 
@@ -77,16 +91,12 @@ See `AUDIT_1000_P01D.md` for the current audit. Earlier audit files are retained
 
 See `PLAYTEST.md` for the intended first-session route.
 
-## Still ahead for Prototype 0.1 polish
+## Next development stage
 
-- Replace the improved vector prototype art with final distinctive illustrated 2D assets when the art pipeline is ready
-- Continue tuning combat feel from human mobile play rather than simulation alone
-- Expand enemy/event/loot variety where it materially improves replayability
-- Establish a stable first-party deployment URL rather than the development raw.githack route
-- Audio pass if justified by the prototype
+Prototype 0.1 should no longer expand in scope. The next stage can concentrate on human mobile playtesting, stronger distinctive illustrated assets, additional PvE depth, and preparation for the later persistence/backend phase without destabilizing the validated vertical slice.
 
 ## Explicitly later — not Prototype 0.1
 
 Production accounts/backend persistence, real multiplayer/PvP servers, guild membership, scheduled Guild Wars, territory seasons, trading, monetization, ads and live-ops content volume.
 
-The repository is the working source of truth for Prototype 0.1d.
+The repository is the working source of truth for **Prototype 0.1 Final**.
