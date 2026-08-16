@@ -8,6 +8,7 @@ on:
       - 'stress-final.mjs'
       - '.github/workflows/final-stress.yml'
   workflow_dispatch:
+# Final release stress gate: 10,000 progression profiles plus persistence/UI/economy torture.
 jobs:
   stress:
     runs-on: ubuntu-latest
