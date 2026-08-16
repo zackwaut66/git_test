@@ -46,8 +46,7 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp index.html _site/index.html
-          cp v5.html _site/v5.html
-          cp app.js _site/app.js
+          cp v6.html _site/v6.html
           cp icon.svg _site/icon.svg
           cp manifest.webmanifest _site/manifest.webmanifest
           cp assets/hunter-vanguard-v2.svg _site/assets/hunter-vanguard-v2.svg
