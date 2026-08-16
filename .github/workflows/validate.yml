@@ -16,6 +16,8 @@ jobs:
           node --check game.js
           node --check systems.js
           node --check combat.js
+          node --check progression.js
+          node --check balance-test.js
           node --check sw.js
       - name: Verify required files
         run: |
@@ -24,4 +26,7 @@ jobs:
           test -f events.css
           test -f systems.css
           test -f combat.css
+          test -f progression.css
           test -f manifest.webmanifest
+      - name: Simulate 100,000 expeditions
+        run: node balance-test.js
