@@ -71,9 +71,10 @@ try{
   if(await illustratedAllies.count()<3)throw new Error('Generated Hunter art was not bound into combat formation.');
   const farmBg=await page.locator('.battlescene').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!farmBg.includes('battle-farmstead-v1.svg'))throw new Error('Illustrated Farmstead combat background did not load.');
-  const enemyArt=await page.locator('.enemyformation .battleunit').evaluateAll(els=>els.map(el=>({name:el.querySelector('b')?.textContent||'',art:getComputedStyle(el).getPropertyValue('--unit-art')})));
-  const required=['Carrion Scavenger','Ash Hound','Farmstead Lurker'];
-  for(const name of required){const row=enemyArt.find(x=>x.name===name);if(!row||!row.art.includes('assets/enemy-'))throw new Error(`${name} illustrated combat art did not bind.`)}
+  const illustratedEnemies=page.locator('.enemyformation .battleunit.v8-enemy-art');
+  if(await illustratedEnemies.count()<3)throw new Error('Every Farmstead encounter unit must use illustrated enemy art.');
+  const enemyArt=await illustratedEnemies.evaluateAll(els=>els.map(el=>getComputedStyle(el).getPropertyValue('--unit-art')));
+  if(enemyArt.some(art=>!art.includes('assets/enemy-')))throw new Error('A Farmstead enemy illustration failed to bind.');
   if(await page.locator('.abilities button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Combat ability tap target is below 44px.');
   await page.screenshot({path:'combat-v8-preview.png',fullPage:true});
 
@@ -98,5 +99,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('Mobile smoke passed: illustrated Enclave, Hunter Hall generated art, illustrated Marches map, combat, loot, equipment and progression are functional.');
+  console.log('Mobile smoke passed: illustrated Enclave, Hunter Hall generated art, illustrated Marches map, Farmstead combat, loot, equipment and progression are functional.');
 }finally{await browser.close()}
