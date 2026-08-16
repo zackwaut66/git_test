@@ -27,6 +27,8 @@ on:
       - 'combat-v19.css'
       - 'map-v20.js'
       - 'map-v20.css'
+      - 'contracts-v21.js'
+      - 'contracts-v21.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -37,6 +39,7 @@ on:
       - 'hunters-smoke.mjs'
       - 'combat-controls-smoke.mjs'
       - 'map-intel-smoke.mjs'
+      - 'contracts-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -74,13 +77,15 @@ jobs:
         run: node combat-controls-smoke.mjs
       - name: Run March intelligence smoke test
         run: node map-intel-smoke.mjs
+      - name: Run post-Warden Hunt Board smoke test
+        run: node contracts-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v20
+          name: prototype-audit-v21
           path: |
             audit-1000-results.json
             audit-title.png
@@ -110,12 +115,14 @@ jobs:
             hunter-dossier-v18-preview.png
             combat-v19-tactical-pause.png
             map-v20-intel-preview.png
+            hunt-board-v21-preview.png
+            hunt-contract-v21-result.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v20
+          name: prototype-deploy-source-v21
           path: |
             index.html
             app.js
@@ -141,6 +148,8 @@ jobs:
             combat-v19.css
             map-v20.js
             map-v20.css
+            contracts-v21.js
+            contracts-v21.css
             assets/
             icon.svg
             manifest.webmanifest
