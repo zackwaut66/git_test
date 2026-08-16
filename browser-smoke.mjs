@@ -13,7 +13,6 @@ try{
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
 
-  // V10 Enclave: the settlement must be an illustrated environment, not the old wireframe scene.
   const enclaveBg=await page.locator('.worldscene').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!enclaveBg.includes('enclave-v10.svg'))throw new Error('Illustrated Enclave environment did not load.');
   for(const key of ['hall','forge','infirmary','tower','store','guild']){
@@ -23,7 +22,6 @@ try{
   if(await page.locator('.hotspot.hall').evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter Hall hotspot is below 44px mobile tap target.');
   await page.screenshot({path:'enclave-v10-preview.png',fullPage:true});
 
-  // Hunter Hall: generated character art must decode and switch with the roster.
   await page.locator('button[data-go="hunters"]').click();
   await page.locator('.v7-hunterhall').waitFor();
   if(await page.locator('.v7-loadout button').count()!==4)throw new Error('Hunter Hall did not render four equipment slots.');
@@ -52,13 +50,11 @@ try{
   await page.locator('.v7-roster button[data-v7-hunter="Vanguard"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='VANGUARD');
 
-  // V9 Marches: the region map must use the illustrated territorial asset.
   await page.locator('button[data-go="map"]').click();
   const marchesBg=await page.locator('.marchmap').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!marchesBg.includes('ashen-marches-map-v1.svg'))throw new Error('Illustrated Ashen Marches map did not load.');
   await page.screenshot({path:'map-v9-preview.png',fullPage:true});
 
-  // V8 combat: actual Hunter art + illustrated Farmstead enemies/background.
   await page.locator('button[data-region="0"]').click();
   if(await page.locator('.eventview').count())await page.locator('[data-event="safe"]').click();
   await page.locator('.battleview').waitFor();
@@ -81,6 +77,9 @@ try{
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
   await page.locator('.resultview').waitFor();
   await page.locator('.resultart .scene-farm').waitFor();
+  const resultBg=await page.locator('.resultart').evaluate(el=>getComputedStyle(el).backgroundImage);
+  if(!resultBg.includes('battle-farmstead-v1.svg'))throw new Error('Expedition result did not preserve the illustrated recovered site.');
+  await page.screenshot({path:'result-v11-preview.png',fullPage:true});
   await page.locator('button[data-secure]').click();
   await page.locator('.inventoryview').waitFor();
   if(await page.locator('.setpips').count()!==2)throw new Error('Set chase progress did not render.');
@@ -99,5 +98,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('Mobile smoke passed: illustrated Enclave, Hunter Hall generated art, illustrated Marches map, Farmstead combat, loot, equipment and progression are functional.');
+  console.log('Mobile smoke passed: Enclave, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
 }finally{await browser.close()}
