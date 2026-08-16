@@ -1,163 +1,106 @@
-# The Bell Beneath Ash — Prototype 0.1 · V24
+# The Bell Beneath Ash — Prototype 0.1 · V28
 
-Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable campaign is **The Ashen Marches**.
+Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite. The first playable campaign is **The Ashen Marches**.
 
-## Play now
+## Current core loop
 
-Development build:
+Expeditions / contracts / guild wars → earn Coin, Iron, Salvage and equipment → reclaim Enclave land → choose permanent district buildings → upgrade those buildings → gain kingdom-wide combat/economy/war bonuses → expand farther → defeat regional threats and improve the guild.
 
-`https://raw.githack.com/zackwaut66/git_test/main/index.html`
+This is now the intended Kingdoms-at-War-style foundation: the Enclave is not merely a menu hub; land and construction are persistent strategic progression.
 
-Immutable validated V24 gameplay/UI snapshot:
+## Major playable systems
 
-`https://rawcdn.githack.com/zackwaut66/git_test/40ed99233ef245ee45eb076257c2c83b931007cf/index.html`
+- Vanguard, Duelist and Physician Hunters with XP, equipment and tactical doctrines
+- four-region Ashen Marches campaign
+- field-discovery events and formation combat
+- Tactical Pause, targeting, Resolve and status effects
+- crafting, salvage, equipment rarity/affixes and item sets
+- Penitent Warden regional boss
+- three repeatable post-Warden Hunt Board contracts
+- Last Toll mastery boss hunt
+- Guild Hall, seven-member prototype roster and persistent local guild progression
+- simulated Guild War: Preparation → War → Results
+- three War Table objectives and three coordinated attacks
+- permanent guild win/loss and contribution records
 
-## Core loop
+## Kingdom / Enclave progression — V27/V28
 
-Enclave → prepare Hunters → inspect March intelligence → expedition / field discovery → formation combat → loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → defeat the Penitent Warden → Hunt Board contracts → Last Toll mastery hunt → Guild Hall → prepare coordinated Guild War strikes → war results and guild progression.
+The Enclave now contains six sequential land districts:
 
-## Current playable build
+1. Inner Ward
+2. Ash Court
+3. West Rampart
+4. Lower Foundry
+5. Cinder Quarter
+6. Outer Bailey
 
-The live entry point is `index.html`. It loads the validated gameplay core plus the current presentation/gameplay layers:
+Land reclamation becomes progressively more expensive. Every reclaimed district becomes a construction plot. The player chooses one of four permanent specializations:
 
-- `app.js` / `app.css` — game state, progression, combat, loot, buildings, persistence and base UI
-- `v7.js` / `v7.css` / `v7-art-polish.css` — illustrated Hunter Hall and Hunter art
-- `combat-v8.js` / `combat-v8.css` — illustrated formation combat
-- `map-v9.css` — Ashen Marches map presentation
-- `enclave-v10.css` — Enclave presentation
-- `result-v11.css` — victory and recovered-loot presentation
-- `title-v12.css` — title screen presentation
-- `causeway-v13.css` — Hollow Causeway presentation
-- `chapel-v14.css` — Saint Orra Chapel presentation
-- `warden-v15.css` — Penitent Warden arena, boss and victory presentation
-- `storehouse-v16.css` — Storehouse, equipment comparison and Forge cohesion pass
-- `facilities-v17.js` / `facilities-v17.css` — Infirmary readiness and Scout Tower field intelligence
-- `hunters-v18.js` / `hunters-v18.css` — selected-Hunter XP dossier and tactical doctrine readout
-- `combat-v19.js` / `combat-v19.css` — focused-threat intelligence and Tactical Pause
-- `map-v20.js` / `map-v20.css` — regional threat/reward intelligence dossiers
-- `contracts-v21.js` / `contracts-v21.css` — post-Warden Hunt Board and repeatable harder contracts
-- `huntmaster-v22.js` / `huntmaster-v22.css` — gated Last Toll mastery boss hunt
-- `guild-v23.js` / `guild-v23.css` — local Guild Hall, guild progression and simulated Guild War vertical slice
-- `ui-v24.js` / `ui-v24.css` / `ui-v24-fixes.css` — locked production visual language, navigation, panel/button system, accessibility metadata and mobile touch-target standards
-- `assets/` — environments, enemy illustrations and Hunter-art runtime payloads
+- **Bastion** — Hunter HP and Guild War defense
+- **Arsenal** — Hunter ATK and Guild War strike power
+- **Foundry** — increased expedition resource recovery
+- **Vigil Shrine** — increased starting Resolve
 
-## Implemented
+Buildings upgrade through three tiers and the bonuses stack across the kingdom. These bonuses feed into live Hunter stats, expedition combat, resource recovery and Guild Wars.
 
-### PvE / Hunters
+### Dynamic Enclave Growth — V28
 
-- Vanguard, Duelist and Physician core Hunters
-- Hunter XP and leveling with visible XP-to-next-level progression
-- Per-Hunter tactical doctrine readout for Brace, Sever and Field Treatment
-- Front/back formation combat with automatic basic attacks
-- Focus targeting and shared Resolve
-- Focus, Sever, Brace and Field Treatment tactical interventions
-- Tactical Pause that freezes automatic combat while preserving target selection and ability planning
-- Focused-threat combat intelligence describing enemy roles and active status effects
-- Bleed, Marked, Broken, Guard and Dread states
-- Field-kit preparation
+The main Enclave scene now changes with kingdom state rather than showing essentially the same settlement throughout progression.
 
-### Campaign / Endgame
+- unreclaimed districts appear as ruined ground
+- reclaimed empty wards visibly open space in the settlement
+- Bastion, Arsenal, Foundry and Vigil Shrine receive different silhouettes/material cues
+- building levels 1–3 visibly increase structure scale and complexity
+- Foundries add furnace glow and smoke
+- settlement walls, gate presence, lighting and overall footprint intensify as more land is reclaimed
+- the scene moves through small → mid → large → fortress composition states
+- the screen reports reclaimed wards, built structures and total building tiers
 
-- Four-node Ashen Marches progression with fog/locking
-- Forsaken Farmstead
-- Hollow Causeway
-- Saint Orra Chapel
-- Penitent Warden boss encounter
-- Nine field-discovery risk/reward events
-- Scout Tower regional intelligence showing threat profiles and base expedition rewards
-- Three repeatable Hunt Board contracts: Cinder Pack, Blackroad Tithe and Echo Choir
-- Contract-specific enemy HP/ATK scaling and starting Resolve pressure
-- Contract bonus resources, bonus equipment and persistent completion counts
-- Last Toll mastery hunt gated behind one completion of all three standard contracts
-- Empowered Warden Echo and Servitor scaling with additional Resolve/Dread pressure
-- Last Toll mastery bounty, guaranteed additional relic and persistent mastery completion count
+The V28 visual gate explicitly compares a fresh 1/6-ward Enclave against a fully reclaimed six-ward fortress.
 
-### Equipment / Enclave
+## Presentation layers
 
-- Common, uncommon, rare and relic equipment
-- Weapon, Head, Armor and Charm slots
-- Randomized equipment affixes
-- Ashen Pilgrim and Mourning Watch equipment sets
-- Direct per-Hunter equipment comparison with ATK/HP deltas
-- New-drop marking and set-progress indicators
-- Forge crafting and salvage economy
-- Coin, Iron and Salvage resources
-- Hunter Hall, Forge, Infirmary, Storehouse and Scout Tower
-- Hunter Hall upgrades adding Enclave Guard and March Scout support
-- Infirmary readiness readout exposing treatment strength, passive triage, field-risk injury reduction and prepared-kit benefit
-- Scout Tower facility readout exposing discovery chance, risky-field success chance and opening expedition advantage by level
+The live entry point is `index.html`. Major current layers include:
 
-### Guild / Strategy Layer — V23
+- `guild-v23.js/css` — Guild Hall and simulated Guild Wars
+- `ui-v24.js/css` + fixes — production UI language and 44px mobile interaction standard
+- `polish-v25.js/css` — interaction/accessibility polish
+- `enclave-v26.js/css` — illustrated Enclave environment rebuild
+- `kingdom-v27.js/css` — land reclamation, construction, tiers and permanent kingdom bonuses
+- `kingdom-v28.js/css` — dynamic settlement growth on the main Enclave scene
 
-- Guild Hall unlocked as a playable system
-- Local guild formation with persistent guild name
-- Guild XP, guild level, PvE contribution and persistent war record
-- Seven-member prototype roster: three player Hunters plus four simulated allied members
-- Simulated enemy guild: Order of Cinders
-- Guild War flow: Preparation → War → Results
-- Three War Table objectives: Ash Gate, Bell Tower and Black Reliquary
-- Hunter-to-objective preparation assignments
-- Three limited coordinated attacks per war
-- Objective defense, strike-power and war-score resolution
-- Enemy-guild counter-scoring
-- Victory/defeat results and persistent win/loss record
-- Guild XP plus Coin/Iron/Salvage war rewards
-
-### Finalized Visual / UI System — V24
-
-V24 is the production visual-language lock. Future screens should conform to this system rather than introducing a new visual direction.
-
-- Unified ash-black / aged-gold material and color language
-- Locked serif/display hierarchy for major game identity and headings
-- Standardized muted body/secondary text hierarchy
-- Standardized panels, sheets, borders, shadows and cards
-- Standardized primary/secondary button treatment
-- Standardized HUD and resource presentation
-- Standardized bottom navigation and active-state treatment
-- Standardized Enclave hotspots, March nodes and Hunter-selection states
-- Production treatment applied to Guild Hall and War Table
-- Consistent focus-visible keyboard/accessibility states
-- Automatic button `type` and accessible-label decoration where missing
-- 44px minimum mobile interaction target enforced for critical controls
-- Horizontal-overflow checks across major 390px-wide phone screens
-- Explicit combat retreat-control correction after the V24 gate detected its previous 34px height
+Earlier campaign/combat/facility layers remain active and are validated by the regression suite.
 
 ## Validation
 
-The final V24 browser gate passed in real Chromium at a **390×844 mobile viewport**. It includes:
+V28 passes the complete 390×844 mobile Chromium regression gate, including:
 
-- main mobile campaign smoke test
-- Hollow Causeway visual/gameplay smoke test
-- Saint Orra Chapel visual/gameplay smoke test
-- Penitent Warden boss smoke test
-- Storehouse and Forge smoke test
-- Infirmary and Scout Tower functional test
-- Hunter progression/dossier test
-- Tactical Pause, paused targeting and automatic-resume combat test
-- March threat/reward intelligence test
-- post-Warden Hunt Board contract test
-- Last Toll mastery unlock/boss/reward test
-- Guild Hall formation/progression test
-- Guild War preparation, coordinated attacks, scoring, rewards and persistence test
-- production UI system test across title, Enclave, Hunters, Marches, inventory, Guild Hall and combat
-- mobile touch-target checks
-- horizontal-overflow checks
-- 1,000-playthrough automated progression audit
-- audit-evidence packaging
+- main campaign
+- Causeway, Chapel and Penitent Warden
+- Storehouse / Forge
+- Infirmary / Scout Tower
+- Hunter progression
+- Tactical Pause
+- March intelligence
+- Hunt Board
+- Last Toll
+- Guild Hall / Guild War
+- production UI checks
+- V27 kingdom expansion mechanics
+- V28 dynamic Enclave visual-growth comparison
+- standard 1,000-playthrough progression audit
 - deployable-source packaging
 
-The V23 Guild War gate verifies local guild formation, a seven-member roster, PvE contribution, three-objective preparation, three coordinated attacks, simulated enemy scoring, war victory rewards and persistent war records.
+### 10,000-profile background-mechanics stress gate
 
-The V24 production-UI gate initially caught the combat **Retreat from the March** control at only 34px high. The production CSS was corrected to enforce a 44px minimum target, and the complete V24 gate then passed, including the 1,000-playthrough audit and deployable-source package.
+The current background systems were additionally tested across **10,000 simulated progression profiles**, split into ten isolated 1,000-profile Chromium batches. **All ten batches passed.**
 
-Earlier large stress testing exercised 10,000 complete progression profiles, inventory/economy mutation cycles, persistence reloads and real DOM navigation. See `FINAL_STRESS_P01.md` and the `AUDIT_1000_*` files for retained validation history.
+Each batch fails automatically on browser/runtime errors, tested state-invariant violations or progression/combat deadlocks. The final gate completed with no batch triggering those conditions. It covers five player strategies, the full campaign, combat/retry behavior, equipment/crafting progression, all six kingdom depths, all four kingdom specializations, building tiers 1–3, kingdom combat/economy/war bonuses, Guild persistence and Kingdom persistence.
+
+See `STRESS_10000_V28.md` for the dedicated report. Earlier retained stress/audit history remains in `FINAL_STRESS_P01.md` and the `AUDIT_1000_*` files.
 
 ## Prototype boundary
 
-Prototype 0.1 still does **not** include production accounts/backend persistence, real networked guild membership, real multiplayer/PvP servers, server-scheduled Guild Wars, trading, monetization, ads or full live-ops content volume. V23 intentionally proves the Guild War gameplay loop locally before backend/network architecture is introduced.
+The current build still uses local browser persistence and simulated guild opponents. It does **not** yet include production accounts/backend persistence, actual networked guild membership, real multiplayer/PvP servers, server-scheduled wars, trading, monetization or live-ops infrastructure.
 
-## Next production phase
-
-**V25 is the final interaction/polish pass**: transitions, feedback states, combat readability, loading/empty/locked states, accessibility/touch refinement and remaining cross-screen visual consistency. Backend/accounts/real multiplayer infrastructure follows after that polish pass.
-
-The repository is the working source of truth for the playable Prototype 0.1 vertical slice.
+The repository is the working source of truth for the playable prototype.
