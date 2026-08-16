@@ -10,7 +10,13 @@ const ENEMY={
  'Ash Hound':'./assets/enemy-ash-hound-v1.svg',
  'Farmstead Lurker':'./assets/enemy-farmstead-lurker-v1.svg',
  'Grainhouse Lurker':'./assets/enemy-farmstead-lurker-v1.svg',
- 'Silo Lurker':'./assets/enemy-farmstead-lurker-v1.svg'
+ 'Silo Lurker':'./assets/enemy-farmstead-lurker-v1.svg',
+ 'Road Reaver':'./assets/enemy-road-reaver-v1.svg',
+ 'Tollhouse Reaver':'./assets/enemy-road-reaver-v1.svg',
+ 'Ashbound Rifleman':'./assets/enemy-rifleman-v1.svg',
+ 'Cinder Rifleman':'./assets/enemy-rifleman-v1.svg',
+ 'Bridge Spotter':'./assets/enemy-bridge-spotter-v1.svg',
+ 'Span Watcher':'./assets/enemy-bridge-spotter-v1.svg'
 };
 let queued=false;
 function artUrl(u){return u?`url("${u.replace(/"/g,'')}" )`:''}
@@ -20,6 +26,7 @@ function decorate(){
  view.dataset.v8='1';
  const scene=view.querySelector('.battlescene');
  if(scene?.classList.contains('zone-farm'))scene.classList.add('v8-farm-art');
+ if(scene?.classList.contains('zone-causeway'))scene.classList.add('v13-causeway-art');
  view.querySelectorAll('.allyformation .battleunit').forEach(unit=>{
    const name=unit.querySelector('b')?.textContent?.trim()||'';
    const art=allyArt(name);
