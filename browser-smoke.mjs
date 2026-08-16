@@ -25,6 +25,8 @@ try{
   await page.locator('.hh-roster button[data-hunter="Duelist"]').click();
   await page.waitForFunction(()=>document.querySelector('.hh-identity h1')?.textContent?.trim()==='DUELIST');
   if(!(await page.locator('.hh-character').evaluate(el=>getComputedStyle(el).backgroundImage)).includes('hunter-duelist-v2.svg'))throw new Error('Roster selection did not switch featured Hunter art.');
+  await page.locator('.hh-roster button[data-hunter="Vanguard"]').click();
+  await page.waitForFunction(()=>document.querySelector('.hh-identity h1')?.textContent?.trim()==='VANGUARD');
 
   await page.locator('button[data-go="map"]').click();
   await page.locator('button[data-region="0"]').click();
