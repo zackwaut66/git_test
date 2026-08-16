@@ -5,10 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: write-all
 
 concurrency:
   group: pages
@@ -28,6 +25,30 @@ jobs:
         run: |
           mkdir -p _site
           cp standalone.html _site/index.html
+
+      - name: Enable Pages if needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code=$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages")
+          if [ "$code" = "404" ]; then
+            echo "Pages site not configured; attempting API enablement."
+            curl -fsS -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages" \
+              -d '{"build_type":"workflow"}'
+          elif [ "$code" = "200" ]; then
+            echo "Pages already configured."
+          else
+            cat /tmp/pages.json
+            exit 1
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
