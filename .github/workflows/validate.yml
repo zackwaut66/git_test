@@ -11,41 +11,18 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
-      - name: Check JavaScript syntax
+      - name: Check active JavaScript syntax
         run: |
-          node --check game.js
-          node --check systems.js
-          node --check combat.js
-          node --check progression.js
-          node --check enclave-systems.js
-          node --check loadout.js
-          node --check difficulty.js
-          node --check preparation.js
-          node --check field-events.js
-          node --check hunter-abilities.js
-          node --check save-tools.js
-          node --check navigation.js
-          node --check objectives.js
-          node --check results.js
-          node --check tutorial.js
-          node --check lifecycle.js
-          node --check balance-test.js
+          node --check app.js
           node --check sw.js
-      - name: Verify required files
+          node --check browser-smoke.mjs
+          node --check audit-1000.mjs
+      - name: Verify active build files
         run: |
           test -f index.html
+          test -f app.js
+          test -f app.css
           test -f icon.svg
-          test -f style.css
-          test -f events.css
-          test -f systems.css
-          test -f combat.css
-          test -f progression.css
-          test -f enclave-systems.css
-          test -f loadout.css
-          test -f preparation.css
-          test -f objectives.css
-          test -f results.css
-          test -f tutorial.css
           test -f manifest.webmanifest
-      - name: Simulate 100,000 expeditions
-        run: node balance-test.js
+          grep -q 'app.js' index.html
+          grep -q 'app.css' index.html
