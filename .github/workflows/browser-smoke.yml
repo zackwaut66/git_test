@@ -46,6 +46,8 @@ on:
       - 'kingdom-v28.css'
       - 'polish-v29.js'
       - 'polish-v29.css'
+      - 'strategy-v30.js'
+      - 'strategy-v30.css'
       - 'assets/**'
       - '*-smoke.mjs'
       - 'audit-1000.mjs'
@@ -99,13 +101,15 @@ jobs:
         run: node kingdom-visual-smoke.mjs
       - name: Run V29 interaction polish smoke test
         run: node polish-v29-smoke.mjs
+      - name: Run V30 realm strategy and stable Hunter smoke test
+        run: node strategy-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v29
+          name: prototype-audit-v30
           path: |
             audit-1000-results.json
             audit-title.png
@@ -152,12 +156,14 @@ jobs:
             kingdom-v27-domain-built.png
             kingdom-v28-enclave-fresh.png
             kingdom-v28-enclave-fortress.png
+            v30-hunter-stable.png
+            v30-realm-war-result.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v29
+          name: prototype-deploy-source-v30
           path: |
             index.html
             app.js
@@ -202,6 +208,8 @@ jobs:
             kingdom-v28.css
             polish-v29.js
             polish-v29.css
+            strategy-v30.js
+            strategy-v30.css
             assets/
             icon.svg
             manifest.webmanifest
