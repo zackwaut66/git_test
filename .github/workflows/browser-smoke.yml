@@ -19,12 +19,15 @@ on:
       - 'chapel-v14.css'
       - 'warden-v15.css'
       - 'storehouse-v16.css'
+      - 'facilities-v17.js'
+      - 'facilities-v17.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
       - 'chapel-smoke.mjs'
       - 'warden-smoke.mjs'
       - 'storehouse-smoke.mjs'
+      - 'facilities-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -54,13 +57,15 @@ jobs:
         run: node warden-smoke.mjs
       - name: Run Storehouse and Forge smoke test
         run: node storehouse-smoke.mjs
+      - name: Run Infirmary and Scout Tower smoke test
+        run: node facilities-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v16
+          name: prototype-audit-v17
           path: |
             audit-1000-results.json
             audit-title.png
@@ -85,12 +90,14 @@ jobs:
             warden-v15-result.png
             storehouse-v16-preview.png
             forge-v16-preview.png
+            infirmary-v17-preview.png
+            scout-tower-v17-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v16
+          name: prototype-deploy-source-v17
           path: |
             index.html
             app.js
@@ -108,6 +115,8 @@ jobs:
             chapel-v14.css
             warden-v15.css
             storehouse-v16.css
+            facilities-v17.js
+            facilities-v17.css
             assets/
             icon.svg
             manifest.webmanifest
