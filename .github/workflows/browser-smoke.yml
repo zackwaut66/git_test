@@ -23,6 +23,8 @@ on:
       - 'facilities-v17.css'
       - 'hunters-v18.js'
       - 'hunters-v18.css'
+      - 'combat-v19.js'
+      - 'combat-v19.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -31,6 +33,7 @@ on:
       - 'storehouse-smoke.mjs'
       - 'facilities-smoke.mjs'
       - 'hunters-smoke.mjs'
+      - 'combat-controls-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -64,13 +67,15 @@ jobs:
         run: node facilities-smoke.mjs
       - name: Run Hunter progression dossier smoke test
         run: node hunters-smoke.mjs
+      - name: Run Tactical Pause combat controls smoke test
+        run: node combat-controls-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v18
+          name: prototype-audit-v19
           path: |
             audit-1000-results.json
             audit-title.png
@@ -98,12 +103,13 @@ jobs:
             infirmary-v17-preview.png
             scout-tower-v17-preview.png
             hunter-dossier-v18-preview.png
+            combat-v19-tactical-pause.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v18
+          name: prototype-deploy-source-v19
           path: |
             index.html
             app.js
@@ -125,6 +131,8 @@ jobs:
             facilities-v17.css
             hunters-v18.js
             hunters-v18.css
+            combat-v19.js
+            combat-v19.css
             assets/
             icon.svg
             manifest.webmanifest
