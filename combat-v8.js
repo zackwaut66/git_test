@@ -21,7 +21,11 @@ const ENEMY={
  'Chapel Thrall':'./assets/enemy-chapel-thrall-v1.svg',
  'Votive Thrall':'./assets/enemy-chapel-thrall-v1.svg',
  'Bell Hand':'./assets/enemy-bell-hand-v1.svg',
- 'Choir Bell Hand':'./assets/enemy-bell-hand-v1.svg'
+ 'Choir Bell Hand':'./assets/enemy-bell-hand-v1.svg',
+ 'Penitent Warden':'./assets/enemy-penitent-warden-v1.svg',
+ 'Bellbound Servitor':'./assets/enemy-bellbound-servitor-v1.svg',
+ 'Ashen Servitor':'./assets/enemy-bellbound-servitor-v1.svg',
+ 'Censer Servitor':'./assets/enemy-bellbound-servitor-v1.svg'
 };
 let queued=false;
 function artUrl(u){return u?`url("${u.replace(/"/g,'')}" )`:''}
@@ -33,6 +37,7 @@ function decorate(){
  if(scene?.classList.contains('zone-farm'))scene.classList.add('v8-farm-art');
  if(scene?.classList.contains('zone-causeway'))scene.classList.add('v13-causeway-art');
  if(scene?.classList.contains('zone-chapel'))scene.classList.add('v14-chapel-art');
+ if(scene?.classList.contains('zone-warden'))scene.classList.add('v15-warden-art');
  view.querySelectorAll('.allyformation .battleunit').forEach(unit=>{
    const name=unit.querySelector('b')?.textContent?.trim()||'';
    const art=allyArt(name);
@@ -42,6 +47,8 @@ function decorate(){
    const name=unit.querySelector('b')?.textContent?.trim()||'';
    const art=ENEMY[name];
    if(art){unit.classList.add('v8-illustrated','v8-enemy-art');unit.style.setProperty('--unit-art',artUrl(art));unit.dataset.art='illustrated';}
+   if(name==='Penitent Warden')unit.classList.add('v15-boss');
+   if(/Servitor/.test(name))unit.classList.add('v15-servitor');
  });
  const meta=view.querySelector('.combatmeta');
  if(meta&&!view.querySelector('.v8-combat-title')){
