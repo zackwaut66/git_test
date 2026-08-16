@@ -1,0 +1,27 @@
+name: Apply 0.1b Balance Patch
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'balance-patch.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply audited balance patch
+        run: python3 balance-patch.py
+      - name: Commit tuned game
+        run: |
+          if git diff --quiet -- app.js; then
+            echo 'No balance changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js
+          git commit -m 'Tune 0.1b progression from 1000-run audit'
+          git push
