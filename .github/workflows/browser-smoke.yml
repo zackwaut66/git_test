@@ -24,6 +24,7 @@ on:
       - 'causeway-smoke.mjs'
       - 'chapel-smoke.mjs'
       - 'warden-smoke.mjs'
+      - 'storehouse-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -51,6 +52,8 @@ jobs:
         run: node chapel-smoke.mjs
       - name: Run Penitent Warden boss smoke test
         run: node warden-smoke.mjs
+      - name: Run Storehouse and Forge smoke test
+        run: node storehouse-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
@@ -80,6 +83,8 @@ jobs:
             chapel-result-v14.png
             warden-v15-preview.png
             warden-v15-result.png
+            storehouse-v16-preview.png
+            forge-v16-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
