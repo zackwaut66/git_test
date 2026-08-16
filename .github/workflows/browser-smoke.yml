@@ -4,7 +4,9 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - '*.js'
       - '**/*.js'
+      - '*.css'
       - '**/*.css'
       - 'manifest.webmanifest'
       - '.github/workflows/browser-smoke.yml'
