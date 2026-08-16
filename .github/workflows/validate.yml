@@ -17,9 +17,11 @@ jobs:
           node --check v7.js
           node --check facilities-v17.js
           node --check hunters-v18.js
+          node --check combat-v19.js
           node --check browser-smoke.mjs
           node --check facilities-smoke.mjs
           node --check hunters-smoke.mjs
+          node --check combat-controls-smoke.mjs
           node --check audit-1000.mjs
       - name: Verify active build files
         run: |
@@ -32,6 +34,8 @@ jobs:
           test -f facilities-v17.css
           test -f hunters-v18.js
           test -f hunters-v18.css
+          test -f combat-v19.js
+          test -f combat-v19.css
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
           test -f assets/hunter-physician-v2.svg
@@ -42,4 +46,6 @@ jobs:
           grep -Eq 'facilities-v17\.css\?v=[0-9]+' index.html
           grep -Eq 'hunters-v18\.js\?v=[0-9]+' index.html
           grep -Eq 'hunters-v18\.css\?v=[0-9]+' index.html
+          grep -Eq 'combat-v19\.js\?v=[0-9]+' index.html
+          grep -Eq 'combat-v19\.css\?v=[0-9]+' index.html
           grep -q 'v7-hunterhall' v7.js
