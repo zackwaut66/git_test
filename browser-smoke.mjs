@@ -17,11 +17,11 @@ try {
     throw new Error('App failed to render but no browser error was captured.');
   }
 
-  const briefing = page.getByRole('button', { name: 'ENTER THE ENCLAVE' });
+  const briefing = page.getByRole('button', { name: 'ENTER THE ENCLAVE', exact: true });
   if (await briefing.count()) await briefing.click();
   await page.getByText('The Enclave', { exact: true }).waitFor();
 
-  await page.getByRole('button', { name: 'MARCHES' }).click();
+  await page.getByRole('button', { name: 'MARCHES', exact: true }).click();
   await page.getByText('THE ASHEN MARCHES', { exact: true }).waitFor();
 
   await page.evaluate(() => start(0));
@@ -31,10 +31,10 @@ try {
   await page.evaluate(() => { clearTimeout(timer); retreat(); });
   await page.getByText('THE ASHEN MARCHES', { exact: true }).waitFor();
 
-  await page.getByRole('button', { name: 'INVENTORY' }).click();
+  await page.getByRole('button', { name: 'INVENTORY', exact: true }).click();
   await page.getByText('STOREHOUSE', { exact: true }).waitFor();
 
-  await page.getByRole('button', { name: 'HUNTERS' }).click();
+  await page.getByRole('button', { name: 'HUNTERS', exact: true }).click();
   await page.getByText('HUNTER HALL', { exact: false }).first().waitFor();
 
   if (failures.length) throw new Error(failures.join('\n'));
