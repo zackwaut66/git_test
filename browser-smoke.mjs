@@ -12,7 +12,7 @@ try{
   await begin.waitFor();
   await begin.click();
   await page.getByText('Open the Western Road',{exact:true}).waitFor();
-  await page.getByRole('button',{name:/MARCHES/}).click();
+  await page.locator('button[data-go="map"]').click();
   await page.getByRole('button',{name:/FARMSTEAD/}).click();
   await page.getByRole('button',{name:/FOCUS/}).waitFor();
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
@@ -21,12 +21,12 @@ try{
   await page.getByText('Recovered Equipment',{exact:true}).waitFor();
   const equip=page.getByRole('button',{name:'EQUIP → Vanguard',exact:true}).first();
   await equip.click();
-  await page.getByRole('button',{name:/ENCLAVE/}).last().click();
+  await page.locator('button[data-go="enclave"]').last().click();
   await page.getByText('Strengthen the Hunter Hall',{exact:true}).waitFor();
   await page.getByRole('button',{name:'GO',exact:true}).click();
   await page.getByRole('button',{name:'UPGRADE',exact:true}).click();
   await page.getByText('Break the Causeway',{exact:true}).waitFor();
-  await page.getByRole('button',{name:/MARCHES/}).click();
+  await page.locator('button[data-go="map"]').click();
   const causeway=page.getByRole('button',{name:/CAUSEWAY/});
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
