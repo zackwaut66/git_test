@@ -24,7 +24,8 @@ try{
   if(contractBattle.resolve>30)throw new Error('Contract battle did not apply its Resolve pressure.');
   if(!contractBattle.max?.length||Math.min(...contractBattle.max)<195)throw new Error('Contract enemy vitality modifier did not apply.');
   if(!contractBattle.atk?.length||Math.min(...contractBattle.atk)<26)throw new Error('Contract enemy attack modifier did not apply.');
-  if(await page.locator('.contract-banner-v21').count()!==1)throw new Error('Active contract banner did not render in combat.');
+  const banner=page.locator('.contract-banner-v21');await banner.waitFor();
+  if(await banner.count()!==1)throw new Error('Active contract banner did not render in combat.');
 
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=1);Game.tick(true)});
   await page.locator('.resultview').waitFor();
