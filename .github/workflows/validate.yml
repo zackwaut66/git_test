@@ -17,6 +17,7 @@ jobs:
           node --check systems.js
           node --check combat.js
           node --check progression.js
+          node --check enclave-systems.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
@@ -27,6 +28,7 @@ jobs:
           test -f systems.css
           test -f combat.css
           test -f progression.css
+          test -f enclave-systems.css
           test -f manifest.webmanifest
       - name: Simulate 100,000 expeditions
         run: node balance-test.js
