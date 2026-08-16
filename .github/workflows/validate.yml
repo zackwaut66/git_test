@@ -21,6 +21,7 @@ jobs:
           node --check map-v20.js
           node --check contracts-v21.js
           node --check huntmaster-v22.js
+          node --check guild-v23.js
           node --check browser-smoke.mjs
           node --check facilities-smoke.mjs
           node --check hunters-smoke.mjs
@@ -28,6 +29,7 @@ jobs:
           node --check map-intel-smoke.mjs
           node --check contracts-smoke.mjs
           node --check huntmaster-smoke.mjs
+          node --check guild-smoke.mjs
           node --check audit-1000.mjs
       - name: Verify active build files
         run: |
@@ -48,6 +50,8 @@ jobs:
           test -f contracts-v21.css
           test -f huntmaster-v22.js
           test -f huntmaster-v22.css
+          test -f guild-v23.js
+          test -f guild-v23.css
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
           test -f assets/hunter-physician-v2.svg
@@ -66,4 +70,6 @@ jobs:
           grep -Eq 'contracts-v21\.css\?v=[0-9]+' index.html
           grep -Eq 'huntmaster-v22\.js\?v=[0-9]+' index.html
           grep -Eq 'huntmaster-v22\.css\?v=[0-9]+' index.html
+          grep -Eq 'guild-v23\.js\?v=[0-9]+' index.html
+          grep -Eq 'guild-v23\.css\?v=[0-9]+' index.html
           grep -q 'v7-hunterhall' v7.js
