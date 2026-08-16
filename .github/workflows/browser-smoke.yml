@@ -14,6 +14,7 @@ on:
       - 'map-v9.css'
       - 'enclave-v10.css'
       - 'result-v11.css'
+      - 'title-v12.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
@@ -43,7 +44,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v11
+          name: prototype-audit-v12
           path: |
             audit-1000-results.json
             audit-title.png
@@ -52,6 +53,7 @@ jobs:
             audit-combat.png
             audit-result.png
             audit-inventory.png
+            title-v12-preview.png
             enclave-v10-preview.png
             hunterhall-preview.png
             map-v9-preview.png
@@ -62,7 +64,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v11
+          name: prototype-deploy-source-v12
           path: |
             index.html
             app.js
@@ -75,6 +77,7 @@ jobs:
             map-v9.css
             enclave-v10.css
             result-v11.css
+            title-v12.css
             assets/
             icon.svg
             manifest.webmanifest
