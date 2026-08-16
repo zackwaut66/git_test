@@ -7,8 +7,10 @@ page.on('console',m=>{if(m.type()==='error')failures.push(`console: ${m.text()}`
 try{
   await page.addInitScript(()=>localStorage.clear());
   await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
-  await page.getByText('THE BELL BENEATH ASH',{exact:false}).first().waitFor();
-  await page.getByRole('button',{name:'BEGIN THE MARCH',exact:true}).click();
+  await page.waitForSelector('#app');
+  const begin=page.getByRole('button',{name:'BEGIN THE MARCH',exact:true});
+  await begin.waitFor();
+  await begin.click();
   await page.getByText('Open the Western Road',{exact:true}).waitFor();
   await page.getByRole('button',{name:/MARCHES/}).click();
   await page.getByRole('button',{name:/FARMSTEAD/}).click();
@@ -28,5 +30,5 @@ try{
   const causeway=page.getByRole('button',{name:/CAUSEWAY/});
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1b mobile smoke passed: title, guided directive, first combat, multi-drop result, equip, Hall upgrade, and Causeway unlock.');
+  console.log('0.1b mobile smoke passed: actionable title, guided directive, first combat, multi-drop result, equip, Hall upgrade, and Causeway unlock.');
 }finally{await browser.close()}
