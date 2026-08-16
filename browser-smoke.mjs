@@ -14,6 +14,10 @@ try{
   await page.locator('button[data-go="map"]').click();
   await page.locator('button[data-region="0"]').click();
   await page.locator('.battleview').waitFor();
+  await page.locator('.battlecallout').waitFor();
+  await page.locator('.combatvitals').waitFor();
+  if(await page.locator('.enemyformation .battleunit').count()<3)throw new Error('Enemy formation art did not render.');
+  if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation art did not render.');
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
   await page.locator('.resultview').waitFor();
   await page.locator('button[data-secure]').click();
@@ -28,6 +32,6 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1b mobile smoke passed: title, directive, combat, multi-drop loot, equip, Hall upgrade, and Causeway unlock.');
+  console.log('0.1c mobile smoke passed: visual combat HUD, formation art, directive, combat, loot, equip, Hall upgrade, and Causeway unlock.');
 }finally{await browser.close()}
-// CI trigger: tuned build + upgrade-sheet navigation regression.
+// CI trigger: Prototype 0.1c visual and combat-feel validation.
