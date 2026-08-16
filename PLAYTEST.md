@@ -1,32 +1,33 @@
-# Ashen Marches Prototype 0.1 — Phone Playtest
-
-Until GitHub Pages or Vercel project creation is enabled, the current `main` branch can be rendered directly through raw.githack for phone playtesting:
+# The Bell Beneath Ash — Prototype 0.1b Phone Playtest
 
 **Development playtest:**
 
 https://raw.githack.com/zackwaut66/git_test/main/index.html
 
-The first browser visit may show raw.githack's confirmation screen. Continue once; subsequent pages from the repository should render normally for the session.
+Prototype 0.1b starts from a fresh save key so the rebuilt first-session flow can be tested cleanly.
 
-## Playtest route
+## Current intended first session
 
-1. Complete the field briefing.
-2. Review the Enclave objective.
-3. Enter the Ashen Marches.
-4. Clear Forsaken Farmstead.
-5. Secure/equip/salvage loot.
-6. Upgrade Hunter Hall and other Enclave facilities.
-7. Continue through Hollow Causeway and Saint Orra Chapel.
-8. Prepare for and defeat the Penitent Warden.
+1. Read the title-screen premise and tap **BEGIN THE MARCH**.
+2. Follow the single active Directive instead of reading a multi-step tutorial wall.
+3. Enter the Marches and clear Forsaken Farmstead.
+4. Secure the multi-item loot drop and equip one recovered item.
+5. Upgrade Hunter Hall to Level 2; this unlocks Hollow Causeway and Enclave Guard support.
+6. Clear Hollow Causeway, salvage unwanted gear if needed, and craft one item at the Forge.
+7. Push through Saint Orra Chapel.
+8. Prepare for and fight the Penitent Warden.
 
-## What to note
+## What changed after the 1,000-run audit
 
-- Any button that does nothing.
-- Text too small or cramped on a phone.
-- Combat that feels too slow, too fast, or unclear.
-- Loot choices that feel meaningless.
-- Confusing progression or objectives.
-- Any screen that feels visually too close to another existing game.
-- Anything that makes you want to stop playing rather than start another expedition.
+- One-screen title/premise instead of an overlong briefing page.
+- Active objective chain is tied directly to progression gates, so it cannot remain behind the player.
+- Enclave is now an illustrated scene with building hotspots instead of a long stack of cards.
+- Map, Hunter Hall and combat are designed to fit the phone viewport rather than becoming multi-screen pages.
+- Normal victories now produce 3–4 equipment drops; the Warden produces 5.
+- Two functioning equipment sets are in the loot pool: Ashen Pilgrim and Mourning Watch.
+- The active application is consolidated into `app.js` + `app.css`; the old load-order override modules are no longer loaded.
+- The browser CI still runs a real mobile smoke route plus 1,000 full progression simulations after changes.
 
-The branch URL updates as `main` changes, so this is for active prototype testing rather than a permanent release URL.
+## Playtest focus
+
+Note anything that is confusing without explanation, any action that feels pointless, combat that feels trivial or unfair, loot that is uninteresting, text that is difficult to read, and any screen that still feels like a web dashboard instead of a game.
