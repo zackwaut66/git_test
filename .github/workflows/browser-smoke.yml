@@ -17,10 +17,12 @@ on:
       - 'title-v12.css'
       - 'causeway-v13.css'
       - 'chapel-v14.css'
+      - 'warden-v15.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
       - 'chapel-smoke.mjs'
+      - 'warden-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -46,13 +48,15 @@ jobs:
         run: node causeway-smoke.mjs
       - name: Run Saint Orra Chapel visual smoke test
         run: node chapel-smoke.mjs
+      - name: Run Penitent Warden boss smoke test
+        run: node warden-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v14
+          name: prototype-audit-v15
           path: |
             audit-1000-results.json
             audit-title.png
@@ -73,12 +77,14 @@ jobs:
             chapel-event-v14.png
             chapel-combat-v14.png
             chapel-result-v14.png
+            warden-v15-preview.png
+            warden-v15-result.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v14
+          name: prototype-deploy-source-v15
           path: |
             index.html
             app.js
@@ -94,6 +100,7 @@ jobs:
             title-v12.css
             causeway-v13.css
             chapel-v14.css
+            warden-v15.css
             assets/
             icon.svg
             manifest.webmanifest
