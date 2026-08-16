@@ -16,6 +16,7 @@ on:
       - 'result-v11.css'
       - 'title-v12.css'
       - 'causeway-v13.css'
+      - 'chapel-v14.css'
       - 'assets/**'
       - 'sw.js'
       - 'manifest.webmanifest'
