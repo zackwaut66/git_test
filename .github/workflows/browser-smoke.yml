@@ -7,12 +7,14 @@ on:
       - 'app.js'
       - 'app.css'
       - 'hunterhall-overrides.css'
+      - 'hunterhall-polish.css'
       - 'hunterhall-v2.js'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
       - 'sw.js'
       - 'manifest.webmanifest'
+      - 'icon.svg'
       - '.github/workflows/browser-smoke.yml'
   workflow_dispatch:
 jobs:
@@ -48,3 +50,20 @@ jobs:
             audit-inventory.png
             hunterhall-preview.png
           if-no-files-found: warn
+      - name: Package deployable source
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prototype-deploy-source
+          path: |
+            index.html
+            app.js
+            app.css
+            hunterhall-overrides.css
+            hunterhall-polish.css
+            hunterhall-v2.js
+            assets/
+            icon.svg
+            manifest.webmanifest
+            sw.js
+          if-no-files-found: error
