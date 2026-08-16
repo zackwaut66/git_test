@@ -1,0 +1,15 @@
+/* V25 final polish: interaction feedback, state readability, accessibility */
+.ui-v25 button,.ui-v25 .node,.ui-v25 [role="button"]{transition:transform .12s ease,filter .12s ease,box-shadow .12s ease,opacity .12s ease}
+.ui-v25 button:active:not(:disabled),.ui-v25 .node:active{transform:scale(.975);filter:brightness(1.12)}
+.ui-v25 button:focus-visible,.ui-v25 [tabindex]:focus-visible{outline:2px solid #d7b66b;outline-offset:3px;box-shadow:0 0 0 4px rgba(215,182,107,.16)}
+.ui-v25 button:disabled,.ui-v25 [aria-disabled="true"]{opacity:.48;filter:saturate(.55);cursor:not-allowed}
+.ui-v25 .gameview{animation:v25-enter .18s ease-out both}
+@keyframes v25-enter{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:none}}
+.ui-v25 .v25-state{margin:10px 0;padding:10px 12px;border:1px solid rgba(215,182,107,.24);background:rgba(9,8,6,.72);font-size:12px;line-height:1.45;letter-spacing:.02em}
+.ui-v25 .v25-state strong{color:#e1c985;text-transform:uppercase;letter-spacing:.09em;font-size:10px}
+.ui-v25 .v25-busy{pointer-events:none;opacity:.72}
+.ui-v25 .v25-busy::after{content:' · · ·';letter-spacing:.2em}
+.ui-v25 .hpbar,.ui-v25 .resolvebar,.ui-v25 progress{min-height:8px}
+.ui-v25 .production-panel-v24,.ui-v25 .production-sheet-v24{scroll-margin-top:72px}
+@media (prefers-reduced-motion:reduce){.ui-v25 *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (max-width:430px){.ui-v25 button{min-height:44px}.ui-v25 .v25-state{font-size:13px}.ui-v25 .hud{position:relative;z-index:20}}
