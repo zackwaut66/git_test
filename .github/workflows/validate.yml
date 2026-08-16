@@ -14,26 +14,20 @@ jobs:
       - name: Check game JavaScript syntax
         run: |
           node --check app.js
+          node --check v7.js
           node --check browser-smoke.mjs
           node --check audit-1000.mjs
-      - name: Parse V5 inline JavaScript
-        run: |
-          node - <<'NODE'
-          const fs=require('fs');
-          const h=fs.readFileSync('v5.html','utf8');
-          const scripts=[...h.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].filter(m=>!(/\bsrc\s*=/.test(m[0])));
-          if(!scripts.length) throw new Error('No inline V5 scripts found');
-          scripts.forEach((m,i)=>{try{new Function(m[1])}catch(e){throw new Error(`Inline script ${i} failed: ${e.message}`)}});
-          console.log(`Parsed ${scripts.length} inline V5 scripts`);
-          NODE
-      - name: Verify active V5 build files
+      - name: Verify active V7 build files
         run: |
           test -f index.html
-          test -f v5.html
           test -f app.js
+          test -f app.css
+          test -f v7.js
+          test -f v7.css
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
           test -f assets/hunter-physician-v2.svg
-          grep -q 'v5.html' index.html
-          grep -q 'REBUILT UI // V5' v5.html
-          grep -q 'app.js?v=5' v5.html
+          grep -q 'app.js?v=7' index.html
+          grep -q 'v7.js?v=7' index.html
+          grep -q 'v7.css?v=7' index.html
+          grep -q 'v7-hunterhall' v7.js
