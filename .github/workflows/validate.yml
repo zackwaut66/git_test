@@ -24,6 +24,7 @@ jobs:
           node --check field-events.js
           node --check hunter-abilities.js
           node --check save-tools.js
+          node --check navigation.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
