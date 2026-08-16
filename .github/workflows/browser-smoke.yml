@@ -34,7 +34,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-1000-p01b
+          name: prototype-audit-1000-p01d
           path: |
             audit-1000-results.json
             audit-title.png
