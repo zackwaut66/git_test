@@ -1,102 +1,88 @@
-# The Bell Beneath Ash — Prototype 0.1 Final
+# The Bell Beneath Ash — Prototype 0.1 · V16
 
-Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable region is **The Ashen Marches**.
+Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable campaign is **The Ashen Marches**.
 
-## Playable loop
+## Play now
 
-Enclave → prepare Hunters → fog-covered Marches → field discovery → formation combat → multi-item loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → unlock deeper territory → Penitent Warden.
+Development build:
 
-## Prototype status
+`https://raw.githack.com/zackwaut66/git_test/main/index.html`
 
-**Prototype 0.1 is feature-frozen and has passed its final stress-validation gate.**
+Immutable V16 snapshot:
 
-The playable application is consolidated into:
+`https://rawcdn.githack.com/zackwaut66/git_test/8eabebf0641916de89fa93b6306a86e7e1f3036f/index.html`
 
-- `index.html`
-- `app.js`
-- `app.css`
-- `sw.js`
-- `manifest.webmanifest`
+## Core loop
 
-Older Prototype 0.1 module files remain in the repository for development history but are no longer loaded by the live application.
+Enclave → prepare Hunters → Ashen Marches → field discovery → formation combat → loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → unlock deeper territory → defeat the Penitent Warden.
 
-## Implemented in Prototype 0.1 Final
+## Current playable build
 
-- One-screen title/premise and mobile-first first-session flow
-- Persistent local browser save while preserving the validated Prototype 0.1 save key
-- Installable/offline-capable PWA shell
-- Spatial Enclave scene with Hunter Hall, Forge, Infirmary, Storehouse, Scout Tower and locked future Guild Hall
-- State-derived Directive system tied directly to progression gates
+The live entry point is `index.html`. It loads the validated gameplay core plus the current presentation layers:
+
+- `app.js` / `app.css` — game state, progression, combat, loot, buildings, persistence and base UI
+- `v7.js` / `v7.css` / `v7-art-polish.css` — illustrated Hunter Hall and generated Hunter art
+- `combat-v8.js` / `combat-v8.css` — illustrated formation combat
+- `map-v9.css` — Ashen Marches map presentation
+- `enclave-v10.css` — Enclave presentation
+- `result-v11.css` — victory and recovered-loot presentation
+- `title-v12.css` — title screen presentation
+- `causeway-v13.css` — Hollow Causeway presentation
+- `chapel-v14.css` — Saint Orra Chapel presentation
+- `warden-v15.css` — Penitent Warden arena, boss and victory presentation
+- `storehouse-v16.css` — Storehouse, equipment comparison and Forge cohesion pass
+- `assets/` — environments, enemy illustrations and Hunter-art runtime payloads
+
+## Implemented
+
 - Vanguard, Duelist and Physician core Hunters
 - Hunter Hall upgrades adding Enclave Guard and March Scout support
 - Hunter XP and leveling
 - Four-node Ashen Marches progression with fog/locking
-- Forsaken Farmstead, Hollow Causeway, Saint Orra Chapel and Penitent Warden
-- Nine field-discovery risk/reward events across the three non-boss locations
-- Three tested combat-roster signatures per encounter: base plus two alternates
+- Forsaken Farmstead
+- Hollow Causeway
+- Saint Orra Chapel
+- Penitent Warden boss encounter
+- Nine field-discovery risk/reward events
 - Front/back formation combat with automatic basic attacks
 - Focus targeting and shared Resolve
 - Focus, Sever, Brace and Field Treatment tactical interventions
 - Bleed, Marked, Broken, Guard and Dread states
 - Field-kit preparation
-- 3–4 equipment drops from normal victories; 5 from the Warden
 - Common, uncommon, rare and relic equipment
 - Weapon, Head, Armor and Charm slots
-- 33 tested equipment names including the Warden relic
-- 12 randomized affixes
-- Ashen Pilgrim set: 2pc attack bonus / 4pc starting Resolve bonus
-- Mourning Watch set: 2pc HP bonus / 4pc incoming-damage reduction
-- Direct per-Hunter loot comparison against the currently equipped same-slot item
-- Explicit ATK/HP deltas rather than a hidden generic power score
-- New-drop marking on freshly recovered equipment
-- Four-pip visual progress for both functioning equipment sets
+- Randomized equipment affixes
+- Ashen Pilgrim and Mourning Watch equipment sets
+- Direct per-Hunter equipment comparison with ATK/HP deltas
+- New-drop marking and set-progress indicators
 - Forge crafting and salvage economy
 - Coin, Iron and Salvage resources
-- Building upgrades with gameplay effects
-- Detailed vector prototype scenes for the Enclave, Farmstead, Causeway, Chapel, Warden and Marches map
-- Distinct Hunter/support silhouettes and differentiated enemy silhouettes, including a quadruped Ash Hound and enlarged Warden
-- Combat-state callouts, selected-target reticle, Hunter/Threat meters and readable ability intent labels
-- Front/back-row visual depth in combat composition
-- Contextual victory art using the cleared encounter environment
+- Hunter Hall, Forge, Infirmary, Storehouse and Scout Tower
+- Locked/future-facing Guild Hall
+- Local browser persistence
+- Illustrated title, Enclave, Hunter Hall, Marches, Farmstead, Causeway, Chapel and Warden presentation
+- Illustrated encounter enemies and Penitent Warden boss/support units
+- Contextual victory screens
+- Mobile-sized combat and management controls
 
-## Final stress validation
+## Validation
 
-The release gate ran **10,000 complete progression profiles** in real Chromium at a 390×844 mobile viewport, plus **500 inventory/economy mutation cycles**, **75 persistence reloads**, and **600 real DOM navigation clicks**.
+The current V16 browser gate passed in real Chromium at a 390×844 mobile viewport. It includes:
 
-Final result:
+- main mobile campaign smoke test
+- Hollow Causeway visual/gameplay smoke test
+- Saint Orra Chapel visual/gameplay smoke test
+- Penitent Warden boss smoke test
+- Storehouse and Forge smoke test
+- 1,000-playthrough automated progression audit
+- deployable-source packaging
 
-- Browser/page errors: **0**
-- Tested state-invariant failures: **0**
-- Progression/combat-loop deadlocks: **0**
-- Persistence failures: **0 / 75**
-- Field-discovery coverage: **9 / 9**
-- Encounter-roster coverage: **3 / 3 for every encounter**
-- Equipment-name coverage: **33**
-- Affix coverage: **12 / 12**
-- Penitent Warden defeated within the stress retry cap: **9,663 / 10,000 profiles**
-- Final stress gate: **PASS**
+The V15 Warden gate and V16 Storehouse/Forge gate both completed successfully before this README update.
 
-Encounter win rates per attempt in the final 10,000-profile run:
+Earlier large stress testing also exercised 10,000 complete progression profiles, inventory/economy mutation cycles, persistence reloads and real DOM navigation. See `FINAL_STRESS_P01.md` and the `AUDIT_1000_*` files for the retained validation history.
 
-- Forsaken Farmstead: **99.69%**
-- Hollow Causeway: **68.00%**
-- Saint Orra Chapel: **72.67%**
-- Penitent Warden: **58.88%**
+## Prototype boundary
 
-See `FINAL_STRESS_P01.md` for the full release validation. Earlier `AUDIT_1000_*` files are retained as tuning history.
+Prototype 0.1 deliberately does **not** yet include production accounts/backend persistence, real multiplayer/PvP servers, guild functionality, scheduled Guild Wars, trading, monetization, ads or live-ops content volume.
 
-## Current development playtest
-
-`https://raw.githack.com/zackwaut66/git_test/main/index.html`
-
-See `PLAYTEST.md` for the intended first-session route.
-
-## Next development stage
-
-Prototype 0.1 should no longer expand in scope. The next stage can concentrate on human mobile playtesting, stronger distinctive illustrated assets, additional PvE depth, and preparation for the later persistence/backend phase without destabilizing the validated vertical slice.
-
-## Explicitly later — not Prototype 0.1
-
-Production accounts/backend persistence, real multiplayer/PvP servers, guild membership, scheduled Guild Wars, territory seasons, trading, monetization, ads and live-ops content volume.
-
-The repository is the working source of truth for **Prototype 0.1 Final**.
+The repository is the working source of truth for the playable Prototype 0.1 vertical slice.
