@@ -44,19 +44,31 @@ jobs:
       - name: Prepare playable site
         if: steps.pages.outputs.enabled == 'true'
         run: |
-          mkdir -p _site/assets
-          cp index.html _site/index.html
-          cp app.js _site/app.js
-          cp app.css _site/app.css
-          cp v7.js _site/v7.js
-          cp v7.css _site/v7.css
-          cp icon.svg _site/icon.svg
-          cp manifest.webmanifest _site/manifest.webmanifest
-          cp assets/hunter-vanguard-v2.svg _site/assets/hunter-vanguard-v2.svg
-          cp assets/hunter-duelist-v2.svg _site/assets/hunter-duelist-v2.svg
-          cp assets/hunter-physician-v2.svg _site/assets/hunter-physician-v2.svg
-          cp assets/hunter-hall-interior-v2.svg _site/assets/hunter-hall-interior-v2.svg
+          rm -rf _site
+          mkdir -p _site
+          cp index.html icon.svg manifest.webmanifest _site/
+          cp *.js _site/
+          cp *.css _site/
+          cp -R assets _site/assets
           touch _site/.nojekyll
+
+          # Fail deployment if any local script/stylesheet referenced by index.html is missing.
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('_site/index.html').read_text()
+          refs = re.findall(r'(?:src|href)="([^"?#]+)', html)
+          missing = []
+          for ref in refs:
+              if ref.startswith(('http://','https://','data:','#')):
+                  continue
+              target = Path('_site') / ref
+              if not target.exists():
+                  missing.append(ref)
+          if missing:
+              raise SystemExit('Missing deploy assets: ' + ', '.join(missing))
+          print(f'Playable site prepared with {len(refs)} referenced local assets verified.')
+          PY
 
       - name: Setup Pages
         if: steps.pages.outputs.enabled == 'true'
