@@ -1,0 +1,49 @@
+(()=>{
+'use strict';
+const ROOT=document.querySelector('#app');if(!ROOT)return;
+const KEY='bell-beneath-ash-kingdom-v27';
+const LAND=[
+ {name:'INNER WARD',cost:{coin:0,iron:0}},
+ {name:'ASH COURT',cost:{coin:30,iron:20}},
+ {name:'WEST RAMPART',cost:{coin:55,iron:34}},
+ {name:'LOWER FOUNDRY',cost:{coin:85,iron:50}},
+ {name:'CINDER QUARTER',cost:{coin:125,iron:72}},
+ {name:'OUTER BAILEY',cost:{coin:180,iron:100}}
+];
+const TYPES={
+ bastion:{name:'BASTION',icon:'⛨',desc:'Fortified quarters and defensive works.',effect:'+12 Hunter HP / level · stronger guild defense'},
+ arsenal:{name:'ARSENAL',icon:'⚔',desc:'Weapons stores, drill yards and smithing benches.',effect:'+2 Hunter ATK / level · stronger guild strikes'},
+ foundry:{name:'FOUNDRY',icon:'⚒',desc:'Recovery crews turn battlefield scrap into usable wealth.',effect:'+8% expedition resource recovery / level'},
+ shrine:{name:'VIGIL SHRINE',icon:'✦',desc:'A warded chapel where Hunters prepare before crossing the gate.',effect:'+5 starting Resolve / level'}
+};
+function fresh(){return {version:1,plots:LAND.map((x,i)=>({reclaimed:i===0,building:null,level:0})),claims:{}}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');return x?.version===1?x:fresh()}catch{return fresh()}}
+let K=load(),selectPlot=null;
+function save(){localStorage.setItem(KEY,JSON.stringify(K))}
+function game(){return window.Game?.state||null}
+function bonuses(){const b={hp:0,atk:0,economy:0,resolve:0,warDefense:0,warStrike:0};for(const p of K.plots){if(!p.building||!p.level)continue;const n=p.level;if(p.building==='bastion'){b.hp+=12*n;b.warDefense+=8*n}if(p.building==='arsenal'){b.atk+=2*n;b.warStrike+=8*n}if(p.building==='foundry')b.economy+=8*n;if(p.building==='shrine')b.resolve+=5*n}return b}
+function nextLocked(){return K.plots.findIndex(p=>!p.reclaimed)}
+function canPay(c){const g=game();return !!g&&g.coin>=c.coin&&g.iron>=c.iron&&(c.salvage||0)<=g.salvage}
+function spend(c){const x=window.Game?.debugState?.();if(!x||x.coin<c.coin||x.iron<c.iron||x.salvage<(c.salvage||0))return false;x.coin-=c.coin;x.iron-=c.iron;x.salvage-=c.salvage||0;window.Game.debugSetState(x);return true}
+function reclaim(i){if(i!==nextLocked())return;const c=LAND[i].cost;if(!canPay(c)||!spend(c))return;K.plots[i].reclaimed=true;save();renderOverlay()}
+function build(i,type){const p=K.plots[i],c={coin:18,iron:8};if(!p?.reclaimed||p.building||!TYPES[type]||!canPay(c)||!spend(c))return;p.building=type;p.level=1;selectPlot=null;save();renderOverlay()}
+function upgrade(i){const p=K.plots[i];if(!p?.building||p.level>=3)return;const c=p.level===1?{coin:42,iron:20,salvage:4}:{coin:78,iron:36,salvage:9};if(!canPay(c)||!spend(c))return;p.level++;save();renderOverlay()}
+function itemMods(name){let atk=0,hp=0;const g=game();for(const i of Object.values(g?.equipped||{})){if(i.owner===name){atk+=i.atk||0;hp+=i.hp||0}}const ap=Object.values(g?.equipped||{}).filter(i=>i.set==='Ashen Pilgrim').length,mw=Object.values(g?.equipped||{}).filter(i=>i.set==='Mourning Watch').length;if(ap>=2)atk+=4;if(mw>=2)hp+=18;return{atk,hp}}
+function installStatsHook(){if(!window.Game||window.Game.__v27Stats)return;window.Game.__v27Stats=true;window.Game.hunterStats=h=>{const m=itemMods(h.name),b=bonuses();return{hp:h.hp+(h.lv-1)*8+m.hp+b.hp,atk:h.atk+(h.lv-1)*3+m.atk+b.atk}}}
+function applyBattle(){const b=window.Game?.battle;if(!b||b.v27KingdomApplied)return;const x=bonuses();b.v27KingdomApplied=true;b.party.forEach(u=>{u.max+=x.hp;u.hp+=x.hp;u.atk+=x.atk});b.resolve=Math.min(100,b.resolve+x.resolve);b.v27Bonus={...x};window.Game.render()}
+function rewardKey(g){const r=g?.lastResult;if(!r)return null;const drops=(g.lastDrops||[]).map(x=>x.id).join('-');return `${r.region}:${(g.clears||[]).join('.')}:${drops}`}
+function applyEconomy(){const g=game(),r=g?.lastResult,b=bonuses();if(!r||b.economy<=0)return;const key=rewardKey(g);if(!key||K.claims[key])return;K.claims[key]=1;const add={coin:Math.floor((r.reward?.coin||0)*b.economy/100),iron:Math.floor((r.reward?.iron||0)*b.economy/100),salvage:Math.floor((r.reward?.salvage||0)*b.economy/100)};save();if(add.coin||add.iron||add.salvage){const s=window.Game.debugState();s.coin+=add.coin;s.iron+=add.iron;s.salvage+=add.salvage;window.Game.debugSetState(s)}}
+function siteHtml(p,i){if(!p.reclaimed)return'';const t=p.building&&TYPES[p.building];return `<div class="kingdom-site-v27 site-${i} ${p.building||'empty'} lv-${p.level}"><i>${t?t.icon:'+'}</i><span>${t?t.name:'EMPTY WARD'}</span>${t?`<small>LV ${p.level}</small>`:''}</div>`}
+function decorateEnclave(view){if(!view)return;const world=view.querySelector('.worldscene');if(!world)return;if(!world.querySelector('.kingdom-sites-v27')){const sites=document.createElement('div');sites.className='kingdom-sites-v27';sites.innerHTML=K.plots.map(siteHtml).join('');world.append(sites)}if(!view.querySelector('[data-v27-domain]')){const btn=document.createElement('button');btn.className='domain-button-v27';btn.dataset.v27Domain='';const reclaimed=K.plots.filter(p=>p.reclaimed).length,built=K.plots.filter(p=>p.building).length;btn.innerHTML=`<small>DOMAIN</small><b>${reclaimed}/6 LAND</b><span>${built} BUILT</span>`;world.append(btn);btn.addEventListener('click',open)}}
+function statGrid(){const b=bonuses();return `<section class="kingdom-stats-v27"><div><small>HUNTER VITALITY</small><b>+${b.hp} HP</b></div><div><small>HUNTER OFFENSE</small><b>+${b.atk} ATK</b></div><div><small>RECOVERY</small><b>+${b.economy}%</b></div><div><small>STARTING RESOLVE</small><b>+${b.resolve}</b></div><div><small>WAR DEFENSE</small><b>+${b.warDefense}</b></div><div><small>WAR STRIKE</small><b>+${b.warStrike}</b></div></section>`}
+function cost(c){return `◈ ${c.coin} · ⚒ ${c.iron}${c.salvage?` · ⌁ ${c.salvage}`:''}`}
+function plotHtml(p,i){const land=LAND[i],t=p.building&&TYPES[p.building],next=i===nextLocked();if(!p.reclaimed)return `<article class="domain-plot-v27 locked ${next?'next':''}"><small>${land.name} · RUINED LAND</small><b>UNRECLAIMED</b><span>${next?'Clear and fortify this district to expand the Enclave.':'Reclaim the preceding ward first.'}</span><em>${next?cost(land.cost):'LOCKED'}</em>${next?`<button data-v27-reclaim="${i}" ${canPay(land.cost)?'':'disabled'}>RECLAIM LAND</button>`:''}</article>`;if(!t)return `<article class="domain-plot-v27 empty"><small>${land.name} · RECLAIMED</small><b>EMPTY BUILDING PLOT</b><span>Choose the permanent role this district will serve.</span><button data-v27-select="${i}">CONSTRUCT</button></article>`;const up=p.level===1?{coin:42,iron:20,salvage:4}:{coin:78,iron:36,salvage:9};return `<article class="domain-plot-v27 built type-${p.building}"><small>${land.name} · ${t.icon} ${t.name}</small><b>${t.name} · LV ${p.level}</b><span>${t.effect}</span>${p.level<3?`<em>NEXT TIER · ${cost(up)}</em><button data-v27-upgrade="${i}" ${canPay(up)?'':'disabled'}>UPGRADE TO LV ${p.level+1}</button>`:'<em>MAXIMUM TIER</em>'}</article>`}
+function chooser(){if(selectPlot===null)return'';return `<section class="kingdom-chooser-v27"><header><small>CONSTRUCTION · ${LAND[selectPlot].name}</small><b>Choose this district's permanent role</b><button data-v27-cancel>×</button></header><div>${Object.entries(TYPES).map(([id,t])=>`<button data-v27-build="${id}" data-plot="${selectPlot}" ${canPay({coin:18,iron:8})?'':'disabled'}><i>${t.icon}</i><b>${t.name}</b><span>${t.desc}</span><em>${t.effect}</em><small>BUILD · ◈ 18 · ⚒ 8</small></button>`).join('')}</div></section>`}
+function open(){selectPlot=null;renderOverlay()}
+function close(){document.querySelector('.kingdom-overlay-v27')?.remove()}
+function renderOverlay(){close();const ov=document.createElement('div');ov.className='kingdom-overlay-v27';ov.innerHTML=`<section class="kingdom-shell-v27"><header><div><small>ENCLAVE DOMAIN · V27</small><b>RECLAIM THE HOLD</b><span>Land → construction → permanent power → further expansion.</span></div><button data-v27-close>×</button></header>${statGrid()}<main class="domain-grid-v27">${K.plots.map(plotHtml).join('')}</main>${chooser()}</section>`;document.body.append(ov);ov.querySelector('[data-v27-close]')?.addEventListener('click',close);ov.addEventListener('click',e=>{if(e.target===ov)close()});ov.querySelectorAll('[data-v27-reclaim]').forEach(b=>b.addEventListener('click',()=>reclaim(+b.dataset.v27Reclaim)));ov.querySelectorAll('[data-v27-select]').forEach(b=>b.addEventListener('click',()=>{selectPlot=+b.dataset.v27Select;renderOverlay()}));ov.querySelector('[data-v27-cancel]')?.addEventListener('click',()=>{selectPlot=null;renderOverlay()});ov.querySelectorAll('[data-v27-build]').forEach(b=>b.addEventListener('click',()=>build(+b.dataset.plot,b.dataset.v27Build)));ov.querySelectorAll('[data-v27-upgrade]').forEach(b=>b.addEventListener('click',()=>upgrade(+b.dataset.v27Upgrade)))}
+function scan(){installStatsHook();ROOT.querySelectorAll('.enclaveview').forEach(decorateEnclave);if(ROOT.querySelector('.battleview'))applyBattle();if(ROOT.querySelector('.resultview'))applyEconomy()}
+let q=false;function schedule(){if(q)return;q=true;requestAnimationFrame(()=>{q=false;scan()})}
+new MutationObserver(schedule).observe(ROOT,{childList:true,subtree:true});scan();
+window.KingdomV27={open,load:()=>JSON.parse(JSON.stringify(K)),bonuses,reset:()=>{localStorage.removeItem(KEY);K=fresh();save()},reclaim,build,upgrade};
+})();
