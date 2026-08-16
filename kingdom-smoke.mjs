@@ -27,7 +27,7 @@ try{
  let bonus=await page.evaluate(()=>KingdomV27.bonuses());
  if(bonus.atk!==2||bonus.warStrike!==8)throw new Error(`V27 Arsenal bonuses incorrect: ${JSON.stringify(bonus)}`);
 
- await page.evaluate(()=>{const s=Game.debugState();s.coin=200;s.iron=120;s.salvage=30;Game.debugSetState(s)});
+ await page.evaluate(()=>{const s=Game.debugState();s.coin=200;s.iron=120;s.salvage=30;Game.debugSetState(s);KingdomV27.open()});
  await page.locator('[data-v27-reclaim="1"]').click();
  await page.waitForFunction(()=>KingdomV27.load().plots[1].reclaimed===true);
  state=await page.evaluate(()=>Game.debugState());
