@@ -14,7 +14,7 @@ try{
   await page.getByRole('button',{name:/FARMSTEAD/}).click();
   await page.getByRole('button',{name:/FOCUS/}).waitFor();
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
-  await page.getByText('Forsaken Farmstead Cleared',{exact:true}).waitFor();
+  await page.getByText(/Forsaken Farmstead CLEARED/i).waitFor();
   await page.getByRole('button',{name:/SECURE \d+ DROPS/}).click();
   await page.getByText('Recovered Equipment',{exact:true}).waitFor();
   const equip=page.getByRole('button',{name:'EQUIP → Vanguard',exact:true}).first();
