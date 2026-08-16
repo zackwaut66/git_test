@@ -42,21 +42,10 @@ on:
       - 'enclave-v26.css'
       - 'kingdom-v27.js'
       - 'kingdom-v27.css'
+      - 'kingdom-v28.js'
+      - 'kingdom-v28.css'
       - 'assets/**'
-      - 'browser-smoke.mjs'
-      - 'causeway-smoke.mjs'
-      - 'chapel-smoke.mjs'
-      - 'warden-smoke.mjs'
-      - 'storehouse-smoke.mjs'
-      - 'facilities-smoke.mjs'
-      - 'hunters-smoke.mjs'
-      - 'combat-controls-smoke.mjs'
-      - 'map-intel-smoke.mjs'
-      - 'contracts-smoke.mjs'
-      - 'huntmaster-smoke.mjs'
-      - 'guild-smoke.mjs'
-      - 'ui-smoke.mjs'
-      - 'kingdom-smoke.mjs'
+      - '*-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -102,15 +91,17 @@ jobs:
         run: node guild-smoke.mjs
       - name: Run production UI smoke test
         run: node ui-smoke.mjs
-      - name: Run Enclave expansion smoke test
+      - name: Run Enclave expansion mechanics smoke test
         run: node kingdom-smoke.mjs
+      - name: Run dynamic Enclave visual-growth smoke test
+        run: node kingdom-visual-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v27
+          name: prototype-audit-v28
           path: |
             audit-1000-results.json
             audit-title.png
@@ -155,12 +146,14 @@ jobs:
             ui-v24-combat.png
             kingdom-v27-domain-start.png
             kingdom-v27-domain-built.png
+            kingdom-v28-enclave-fresh.png
+            kingdom-v28-enclave-fortress.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v27
+          name: prototype-deploy-source-v28
           path: |
             index.html
             app.js
@@ -201,6 +194,8 @@ jobs:
             enclave-v26.css
             kingdom-v27.js
             kingdom-v27.css
+            kingdom-v28.js
+            kingdom-v28.css
             assets/
             icon.svg
             manifest.webmanifest
