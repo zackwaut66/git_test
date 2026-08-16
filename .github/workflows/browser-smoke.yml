@@ -15,8 +15,10 @@ on:
       - 'enclave-v10.css'
       - 'result-v11.css'
       - 'title-v12.css'
+      - 'causeway-v13.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
+      - 'causeway-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -38,13 +40,15 @@ jobs:
         run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
       - name: Run mobile browser smoke test
         run: node browser-smoke.mjs
+      - name: Run Hollow Causeway visual smoke test
+        run: node causeway-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v12
+          name: prototype-audit-v13
           path: |
             audit-1000-results.json
             audit-title.png
@@ -59,12 +63,15 @@ jobs:
             map-v9-preview.png
             combat-v8-preview.png
             result-v11-preview.png
+            causeway-event-v13.png
+            causeway-combat-v13.png
+            causeway-result-v13.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v12
+          name: prototype-deploy-source-v13
           path: |
             index.html
             app.js
@@ -78,6 +85,7 @@ jobs:
             enclave-v10.css
             result-v11.css
             title-v12.css
+            causeway-v13.css
             assets/
             icon.svg
             manifest.webmanifest
