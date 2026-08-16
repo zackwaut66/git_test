@@ -37,7 +37,7 @@ try{
   await page.screenshot({path:'hunt-contract-v21-result.png',fullPage:true});
 
   await page.locator('[data-secure]').click();
-  await page.locator('button[data-go="enclave"]').click();
+  await page.locator('.bottomnav button[data-go="enclave"]').click();
   const refreshed=page.locator('.hunt-board-v21');await refreshed.waitFor();
   const cinder=await refreshed.locator('[data-v21-contract="cinder_pack"]').innerText();
   if(!cinder.includes('1 COMPLETION'))throw new Error('Hunt Board did not persist contract completion count.');
