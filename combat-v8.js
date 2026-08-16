@@ -16,7 +16,12 @@ const ENEMY={
  'Ashbound Rifleman':'./assets/enemy-rifleman-v1.svg',
  'Cinder Rifleman':'./assets/enemy-rifleman-v1.svg',
  'Bridge Spotter':'./assets/enemy-bridge-spotter-v1.svg',
- 'Span Watcher':'./assets/enemy-bridge-spotter-v1.svg'
+ 'Span Watcher':'./assets/enemy-bridge-spotter-v1.svg',
+ 'Reliquary Husk':'./assets/enemy-reliquary-husk-v1.svg',
+ 'Chapel Thrall':'./assets/enemy-chapel-thrall-v1.svg',
+ 'Votive Thrall':'./assets/enemy-chapel-thrall-v1.svg',
+ 'Bell Hand':'./assets/enemy-bell-hand-v1.svg',
+ 'Choir Bell Hand':'./assets/enemy-bell-hand-v1.svg'
 };
 let queued=false;
 function artUrl(u){return u?`url("${u.replace(/"/g,'')}" )`:''}
@@ -27,6 +32,7 @@ function decorate(){
  const scene=view.querySelector('.battlescene');
  if(scene?.classList.contains('zone-farm'))scene.classList.add('v8-farm-art');
  if(scene?.classList.contains('zone-causeway'))scene.classList.add('v13-causeway-art');
+ if(scene?.classList.contains('zone-chapel'))scene.classList.add('v14-chapel-art');
  view.querySelectorAll('.allyformation .battleunit').forEach(unit=>{
    const name=unit.querySelector('b')?.textContent?.trim()||'';
    const art=allyArt(name);
