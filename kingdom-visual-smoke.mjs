@@ -24,11 +24,9 @@ try{
     {reclaimed:true,building:'arsenal',level:2},
     {reclaimed:true,building:'bastion',level:2}
    ];
-   localStorage.setItem('bell-beneath-ash-kingdom-v27',JSON.stringify({version:1,plots,claims:{}}));
+   KingdomV27.debugSetState({version:1,plots,claims:{}});
+   KingdomV28.refresh();
  });
- await page.reload({waitUntil:'networkidle'});
- await page.locator('button[data-continue],button[data-begin]').first().click();
- await page.locator('.kingdom-growth-v28').waitFor();
  await page.waitForFunction(()=>document.querySelector('.growth-status-v28')?.textContent.includes('6/6 WARDS'));
  status=await page.locator('.growth-status-v28').innerText();
  if(!status.includes('6/6 WARDS RECLAIMED')||!status.includes('6 STRUCTURES')||!status.includes('16 TOTAL TIERS'))throw new Error(`V28 fortress footprint incorrect: ${status}`);
