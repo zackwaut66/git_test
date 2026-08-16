@@ -3,12 +3,19 @@ import { chromium } from 'playwright';
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
 const failures = [];
-page.on('pageerror', e => failures.push(`pageerror: ${e.message}`));
-page.on('console', msg => { if (msg.type() === 'error') failures.push(`console: ${msg.text()}`); });
+page.on('pageerror', e => { const m=`pageerror: ${e.message}`; failures.push(m); console.error(m); });
+page.on('console', msg => { if (msg.type() === 'error') { const m=`console: ${msg.text()}`; failures.push(m); console.error(m); } });
 
 try {
   await page.goto('http://127.0.0.1:8080/index.html', { waitUntil: 'networkidle' });
-  await page.waitForSelector('#app');
+  await page.waitForSelector('#app', { state: 'attached' });
+  await page.waitForTimeout(1000);
+  const appHtml = await page.locator('#app').innerHTML();
+  if (!appHtml.trim()) {
+    console.error('APP HTML EMPTY');
+    if (failures.length) throw new Error(failures.join('\n'));
+    throw new Error('App failed to render but no browser error was captured.');
+  }
 
   const briefing = page.getByRole('button', { name: 'ENTER THE ENCLAVE' });
   if (await briefing.count()) await briefing.click();
