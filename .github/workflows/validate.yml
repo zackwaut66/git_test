@@ -27,6 +27,7 @@ jobs:
           node --check enclave-v26.js
           node --check kingdom-v27.js
           node --check kingdom-v28.js
+          node --check strategy-v30.js
           node --check browser-smoke.mjs
           node --check facilities-smoke.mjs
           node --check hunters-smoke.mjs
@@ -38,6 +39,8 @@ jobs:
           node --check ui-smoke.mjs
           node --check kingdom-smoke.mjs
           node --check kingdom-visual-smoke.mjs
+          node --check polish-v29-smoke.mjs
+          node --check strategy-smoke.mjs
           node --check audit-1000.mjs
       - name: Verify active build files
         run: |
@@ -71,6 +74,8 @@ jobs:
           test -f kingdom-v27.css
           test -f kingdom-v28.js
           test -f kingdom-v28.css
+          test -f strategy-v30.js
+          test -f strategy-v30.css
           test -f assets/enclave-v26.svg
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
@@ -85,4 +90,8 @@ jobs:
           grep -Eq 'kingdom-v27\.css\?v=[0-9]+' index.html
           grep -Eq 'kingdom-v28\.js\?v=[0-9]+' index.html
           grep -Eq 'kingdom-v28\.css\?v=[0-9]+' index.html
+          grep -Eq 'strategy-v30\.js\?v=[0-9]+' index.html
+          grep -Eq 'strategy-v30\.css\?v=[0-9]+' index.html
+          ! grep -q 'assets/runtime/' index.html
+          grep -q 'stable-vector-art' v7.js
           grep -q 'v7-hunterhall' v7.js
