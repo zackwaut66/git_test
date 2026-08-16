@@ -22,6 +22,7 @@ jobs:
           node --check difficulty.js
           node --check preparation.js
           node --check field-events.js
+          node --check hunter-abilities.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
