@@ -6,6 +6,9 @@ on:
       - 'index.html'
       - 'app.js'
       - 'app.css'
+      - 'hunterhall-overrides.css'
+      - 'hunterhall-v2.js'
+      - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
       - 'sw.js'
@@ -43,4 +46,5 @@ jobs:
             audit-combat.png
             audit-result.png
             audit-inventory.png
+            hunterhall-preview.png
           if-no-files-found: warn
