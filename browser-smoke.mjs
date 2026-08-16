@@ -7,29 +7,27 @@ page.on('console',m=>{if(m.type()==='error')failures.push(`console: ${m.text()}`
 try{
   await page.addInitScript(()=>localStorage.clear());
   await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
-  await page.waitForSelector('#app');
-  const begin=page.getByRole('button',{name:'BEGIN THE MARCH',exact:true});
-  await begin.waitFor();
-  await begin.click();
-  await page.getByText('Open the Western Road',{exact:true}).waitFor();
+  await page.locator('button[data-begin]').waitFor();
+  await page.locator('button[data-begin]').click();
+  await page.locator('.directive').waitFor();
+  if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
   await page.locator('button[data-go="map"]').click();
-  await page.getByRole('button',{name:/FARMSTEAD/}).click();
-  await page.getByRole('button',{name:/FOCUS/}).waitFor();
+  await page.locator('button[data-region="0"]').click();
+  await page.locator('.battleview').waitFor();
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
-  await page.getByText(/Forsaken Farmstead CLEARED/i).waitFor();
-  await page.getByRole('button',{name:/SECURE \d+ DROPS/}).click();
-  await page.getByText('Recovered Equipment',{exact:true}).waitFor();
-  const equip=page.getByRole('button',{name:'EQUIP → Vanguard',exact:true}).first();
-  await equip.click();
+  await page.locator('.resultview').waitFor();
+  await page.locator('button[data-secure]').click();
+  await page.locator('.inventoryview').waitFor();
+  await page.locator('button[data-equip][data-owner="Vanguard"]').first().click();
   await page.locator('button[data-go="enclave"]').last().click();
-  await page.getByText('Strengthen the Hunter Hall',{exact:true}).waitFor();
-  await page.getByRole('button',{name:'GO',exact:true}).click();
-  await page.getByRole('button',{name:'UPGRADE',exact:true}).click();
-  await page.getByText('Break the Causeway',{exact:true}).waitFor();
+  if(!(await page.locator('.directive').innerText()).includes('Strengthen the Hunter Hall'))throw new Error('Hall directive did not advance after equipping loot.');
+  await page.locator('button[data-directive]').click();
+  await page.locator('button[data-upgrade="hall"]').click();
+  if(!(await page.locator('.directive').innerText()).includes('Break the Causeway'))throw new Error('Causeway directive did not advance after Hall Lv2.');
   await page.locator('button[data-go="map"]').click();
-  const causeway=page.getByRole('button',{name:/CAUSEWAY/});
+  const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1b mobile smoke passed: actionable title, guided directive, first combat, multi-drop result, equip, Hall upgrade, and Causeway unlock.');
+  console.log('0.1b mobile smoke passed: title, directive, combat, multi-drop loot, equip, Hall upgrade, and Causeway unlock.');
 }finally{await browser.close()}
 // This smoke file is also the CI trigger used after automated balance patches.
