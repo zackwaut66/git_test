@@ -8,7 +8,10 @@ try{
   await page.addInitScript(()=>localStorage.clear());
   await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
   await page.locator('button[data-begin]').waitFor();
+  const titleBg=await page.locator('.titleart').evaluate(el=>getComputedStyle(el).backgroundImage);
+  if(!titleBg.includes('title-v12.svg'))throw new Error('Illustrated title environment did not load.');
   if(await page.locator('button[data-begin]').evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Begin control is below 44px mobile tap target.');
+  await page.screenshot({path:'title-v12-preview.png',fullPage:true});
   await page.locator('button[data-begin]').click();
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
@@ -98,5 +101,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('Mobile smoke passed: Enclave, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
+  console.log('Mobile smoke passed: illustrated title, Enclave, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
 }finally{await browser.close()}
