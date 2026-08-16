@@ -50,7 +50,7 @@ const ENCOUNTER_VARIANTS=[
   ],
   [
     [['Penitent Warden',880,38,'front','warden'],['Bellbound Servitor',235,25,'front','servitor'],['Ashen Servitor',245,25,'front','servitor']],
-    [['Penitent Warden',895,38,'front','warden'],['Bellbound Servitor',225,25,'front','servitor'],['Bellbound Servitor',225,26,'front','servitor']]
+    [['Penitent Warden',895,38,'front','warden'],['Bellbound Servitor',225,25,'front','servitor'],['Censer Servitor',225,26,'front','servitor']]
   ]
 ];
 function fresh(){return {

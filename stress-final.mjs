@@ -76,6 +76,38 @@ for(let offset=0;offset<TOTAL_RUNS;offset+=BATCH_SIZE){
   console.log(`stress batch ${offset/BATCH_SIZE+1}/${TOTAL_RUNS/BATCH_SIZE} complete`);
 }
 
+// Dedicated discovery-event coverage: progression normally leaves the Farmstead after its first clear,
+// so explicitly revisit all three non-boss regions and validate every authored discovery event.
+await page.reload({waitUntil:'domcontentloaded'});
+await page.evaluate(()=>localStorage.clear());
+await page.reload({waitUntil:'domcontentloaded'});
+const dedicatedEvents=await page.evaluate(()=>{
+  const titles=new Set();
+  for(let region=0;region<3;region++){
+    for(let n=0;n<250;n++){
+      const s=Game.fresh();
+      s.started=true;
+      s.screen='map';
+      s.clears=[1,1,1,0];
+      s.buildings.hall=2;
+      s.buildings.tower=3;
+      s.crafted=1;
+      Game.debugSetState(s);
+      Game.depart(region);
+      if(Game.state.screen==='event'){
+        const title=document.querySelector('.eventcopy h1')?.textContent?.trim();
+        if(title)titles.add(title);
+        Game.resolveEvent(false);
+        if(Game.battle)Game.go('map');
+      }else if(Game.battle){
+        Game.go('map');
+      }
+    }
+  }
+  return [...titles];
+});
+for(const title of dedicatedEvents)summary.eventCoverage.add(title);
+
 // Inventory/economy mutation torture in disposable batches to avoid masking memory leaks as test-harness exhaustion.
 for(let batch=0;batch<10;batch++){
   await page.reload({waitUntil:'domcontentloaded'});await page.evaluate(()=>localStorage.clear());await page.reload({waitUntil:'domcontentloaded'});
