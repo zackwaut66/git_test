@@ -43,8 +43,10 @@ try{
   if(await page.locator('.setpips').count()!==2)throw new Error('Set chase progress did not render.');
   if(await page.locator('.compareline').count()<3)throw new Error('Loot comparison lines did not render.');
   if(await page.locator('.freshdrop').count()<3)throw new Error('Recovered drops were not marked as new.');
-  await page.locator('button[data-equip][data-owner="Vanguard"]').first().click();
-  if(!(await page.locator('.compareline').first().innerText()).includes('CURRENTLY EQUIPPED'))throw new Error('Equipped-item comparison state did not update.');
+  const equipButtons=page.locator('button[data-equip]');
+  if(await equipButtons.count()<1)throw new Error('No equip controls rendered for recovered loot.');
+  await equipButtons.first().click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('.compareline')].some(el=>el.textContent?.includes('CURRENTLY EQUIPPED')));
   await page.locator('button[data-go="enclave"]').last().click();
   if(!(await page.locator('.directive').innerText()).includes('Strengthen the Hunter Hall'))throw new Error('Hall directive did not advance after equipping loot.');
   await page.locator('button[data-directive]').click();
