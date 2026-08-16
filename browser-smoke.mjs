@@ -20,6 +20,7 @@ try{
   if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation art did not render.');
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
   await page.locator('.resultview').waitFor();
+  await page.locator('.resultart .scene-farm').waitFor();
   await page.locator('button[data-secure]').click();
   await page.locator('.inventoryview').waitFor();
   await page.locator('button[data-equip][data-owner="Vanguard"]').first().click();
@@ -32,6 +33,6 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1c mobile smoke passed: visual combat HUD, formation art, directive, combat, loot, equip, Hall upgrade, and Causeway unlock.');
+  console.log('0.1c mobile smoke passed: combat composition, contextual result art, visual HUD, progression, and loot loop.');
 }finally{await browser.close()}
-// CI trigger: Prototype 0.1c visual and combat-feel validation.
+// CI trigger: Prototype 0.1c combat composition + contextual result-scene validation.
