@@ -84,3 +84,26 @@ jobs:
         if: steps.pages.outputs.enabled == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify live playable
+        if: steps.pages.outputs.enabled == 'true'
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          base="${PAGE_URL%/}/"
+          for path in \
+            "" \
+            "polish-v29.js?v=1" \
+            "kingdom-v28.css?v=1" \
+            "guild-v23.js?v=1" \
+            "assets/runtime/hv1.js?v=1" \
+            "assets/enclave-v26.svg"
+          do
+            echo "Verifying ${base}${path}"
+            curl --fail --silent --show-error --location --retry 6 --retry-delay 2 --retry-all-errors \
+              --output /tmp/live-asset "${base}${path}"
+            test -s /tmp/live-asset
+          done
+          curl --fail --silent --show-error --location --retry 6 --retry-delay 2 --retry-all-errors \
+            "${base}" | grep -q 'polish-v29.js?v=1'
+          echo "Live V29 playable and key runtime assets verified at ${base}"
