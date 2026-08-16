@@ -2,7 +2,7 @@
   const baseView=view,baseHunters=hunters,baseInventory=inventory;
   view=function(){if(S.screen==='loadout')return loadoutView();return baseView()};
   hunters=function(){return `${baseHunters()}<div class="panel loadoutentry"><h2>LOADOUT PLANNING</h2><p class=sub>Compare equipped gear by Hunter and slot before committing changes.</p><button class=btn onclick="go('loadout')">OPEN LOADOUT COMPARISON</button></div>`};
-  inventory=function(){return `${baseInventory()}<div class="panel loadoutentry"><button class=btn onclick="go('loadout')">COMPARE HUNTER LOADOUTS</button></div>`};
+  inventory=function(){const pieces=setCount();return `${baseInventory()}<div class="panel setdetail"><h2>ASHEN PILGRIM</h2><div class="setrank ${pieces>=2?'active':''}">2 PIECES · +5 total Hunter ATK</div><div class="setrank ${pieces>=4?'active':''}">4 PIECES · +15 starting Resolve</div></div><div class="panel loadoutentry"><button class=btn onclick="go('loadout')">COMPARE HUNTER LOADOUTS</button></div>`};
   function current(h,slot){return S.equipped?.[`${h}:${slot}`]||null}
   function candidates(slot){return S.inventory.filter(i=>i.slot===slot&&!i.owner).sort((a,b)=>(b.atk||0)-(a.atk||0))}
   function slotRow(h,slot){
@@ -10,8 +10,8 @@
     return `<div class="loadoutslot"><div><span class=slotbadge>${slot}</span><b>${cur?cur.name:'EMPTY'}</b><small>${cur?`${cur.rarity.toUpperCase()} · +${cur.atk} ATK · ${cur.affix}`:'No item equipped'}</small></div><div class=upgradepick>${best?`<span class="${delta>0?'upgradegood':delta<0?'upgradebad':''}">${delta>=0?'+':''}${delta} ATK</span><b>${best.name}</b><small>${best.rarity.toUpperCase()}${best.set?' · '+best.set:''}</small><button class="btn small" onclick="equipTo(${best.id},'${h}')">EQUIP</button>`:'<span class=sub>No unequipped candidate</span>'}</div></div>`
   }
   function loadoutView(){
-    const slots=['Weapon','Head','Armor','Charm'];
-    return `<div class="panel loadoutview"><h2>HUNTER LOADOUTS</h2><p class=sub>Each Hunter has one slot of each type. The right column shows the strongest currently unequipped candidate for that slot; set pieces may be worth taking even when raw ATK is lower.</p>${S.hunters.map(h=>`<section class=hunterloadout><header><h3>${h.n} · LV ${h.lv}</h3><span>POWER ${power(h)}</span></header>${slots.map(s=>slotRow(h.n,s)).join('')}</section>`).join('')}<div class=set>Ashen Pilgrim pieces equipped: ${setCount()} ${setCount()>=2?'· SET BONUS ACTIVE':''}</div><div class=choice><button class=btn onclick="go('inventory')">STOREHOUSE</button><button class=btn onclick="go('hunters')">HUNTER HALL</button></div></div>`
+    const slots=['Weapon','Head','Armor','Charm'],pieces=setCount();
+    return `<div class="panel loadoutview"><h2>HUNTER LOADOUTS</h2><p class=sub>Each Hunter has one slot of each type. The right column shows the strongest currently unequipped candidate for that slot; set pieces may be worth taking even when raw ATK is lower.</p>${S.hunters.map(h=>`<section class=hunterloadout><header><h3>${h.n} · LV ${h.lv}</h3><span>POWER ${power(h)}</span></header>${slots.map(s=>slotRow(h.n,s)).join('')}</section>`).join('')}<div class=set>Ashen Pilgrim · ${pieces} pieces · ${pieces>=4?'2pc +5 ATK / 4pc +15 Resolve ACTIVE':pieces>=2?'2pc +5 ATK ACTIVE / 4pc LOCKED':'2pc and 4pc bonuses LOCKED'}</div><div class=choice><button class=btn onclick="go('inventory')">STOREHOUSE</button><button class=btn onclick="go('hunters')">HUNTER HALL</button></div></div>`
   }
   render();
 })();
