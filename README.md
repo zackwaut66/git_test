@@ -1,4 +1,4 @@
-# The Bell Beneath Ash — Prototype 0.1 · V28
+# The Bell Beneath Ash — Prototype 0.1 · V29
 
 Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite. The first playable campaign is **The Ashen Marches**.
 
@@ -6,7 +6,7 @@ Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite. The first playabl
 
 Expeditions / contracts / guild wars → earn Coin, Iron, Salvage and equipment → reclaim Enclave land → choose permanent district buildings → upgrade those buildings → gain kingdom-wide combat/economy/war bonuses → expand farther → defeat regional threats and improve the guild.
 
-This is now the intended Kingdoms-at-War-style foundation: the Enclave is not merely a menu hub; land and construction are persistent strategic progression.
+This is the intended Kingdoms-at-War-style foundation: the Enclave is persistent strategic territory, not merely a menu hub.
 
 ## Major playable systems
 
@@ -25,14 +25,7 @@ This is now the intended Kingdoms-at-War-style foundation: the Enclave is not me
 
 ## Kingdom / Enclave progression — V27/V28
 
-The Enclave now contains six sequential land districts:
-
-1. Inner Ward
-2. Ash Court
-3. West Rampart
-4. Lower Foundry
-5. Cinder Quarter
-6. Outer Bailey
+The Enclave contains six sequential land districts: Inner Ward, Ash Court, West Rampart, Lower Foundry, Cinder Quarter and Outer Bailey.
 
 Land reclamation becomes progressively more expensive. Every reclaimed district becomes a construction plot. The player chooses one of four permanent specializations:
 
@@ -41,22 +34,26 @@ Land reclamation becomes progressively more expensive. Every reclaimed district 
 - **Foundry** — increased expedition resource recovery
 - **Vigil Shrine** — increased starting Resolve
 
-Buildings upgrade through three tiers and the bonuses stack across the kingdom. These bonuses feed into live Hunter stats, expedition combat, resource recovery and Guild Wars.
+Buildings upgrade through three tiers and bonuses stack across the kingdom. V28 makes this progression visible on the main Enclave scene: ruins become reclaimed wards, building types receive distinct silhouettes, higher tiers become larger/more complex, and the settlement moves from a small hold to a six-ward fortress.
 
-### Dynamic Enclave Growth — V28
+## Interaction / accessibility polish — V29
 
-The main Enclave scene now changes with kingdom state rather than showing essentially the same settlement throughout progression.
+V29 leaves the validated V28 game mechanics intact and adds a dedicated presentation/interaction layer:
 
-- unreclaimed districts appear as ruined ground
-- reclaimed empty wards visibly open space in the settlement
-- Bastion, Arsenal, Foundry and Vigil Shrine receive different silhouettes/material cues
-- building levels 1–3 visibly increase structure scale and complexity
-- Foundries add furnace glow and smoke
-- settlement walls, gate presence, lighting and overall footprint intensify as more land is reclaimed
-- the scene moves through small → mid → large → fortress composition states
-- the screen reports reclaimed wards, built structures and total building tiers
+- tactile pressed states and short action feedback for touch controls
+- subtle screen-entry and resource-change feedback
+- improved combat emphasis for critical-health units and focused targets
+- explicit button types, accessible names and disabled-state semantics
+- live screen announcements for assistive technology
+- modal dialog semantics for sheets and overlays
+- automatic keyboard focus into newly opened dialogs
+- Escape-to-close behavior with focus restoration
+- fixed-position overlay visibility handling
+- coarse-pointer minimum touch targets
+- reduced-motion support
+- mobile dialog scroll containment and continued horizontal-overflow protection
 
-The V28 visual gate explicitly compares a fresh 1/6-ward Enclave against a fully reclaimed six-ward fortress.
+The V29 regression gate caught and fixed a real accessibility issue in the new focus manager: fixed-position overlays can have `offsetParent === null`, so visibility is now determined from rendered client rectangles and computed visibility instead.
 
 ## Presentation layers
 
@@ -64,16 +61,17 @@ The live entry point is `index.html`. Major current layers include:
 
 - `guild-v23.js/css` — Guild Hall and simulated Guild Wars
 - `ui-v24.js/css` + fixes — production UI language and 44px mobile interaction standard
-- `polish-v25.js/css` — interaction/accessibility polish
+- `polish-v25.js/css` — earlier interaction/accessibility polish
 - `enclave-v26.js/css` — illustrated Enclave environment rebuild
 - `kingdom-v27.js/css` — land reclamation, construction, tiers and permanent kingdom bonuses
 - `kingdom-v28.js/css` — dynamic settlement growth on the main Enclave scene
+- `polish-v29.js/css` — current interaction feedback, modal focus, accessibility and combat-readability pass
 
 Earlier campaign/combat/facility layers remain active and are validated by the regression suite.
 
 ## Validation
 
-V28 passes the complete 390×844 mobile Chromium regression gate, including:
+V29 passes the complete **390×844 mobile Chromium regression gate**, including:
 
 - main campaign
 - Causeway, Chapel and Penitent Warden
@@ -88,16 +86,18 @@ V28 passes the complete 390×844 mobile Chromium regression gate, including:
 - production UI checks
 - V27 kingdom expansion mechanics
 - V28 dynamic Enclave visual-growth comparison
+- V29 interaction/accessibility smoke test
 - standard 1,000-playthrough progression audit
+- audit-evidence packaging
 - deployable-source packaging
+
+The V29-specific gate verifies button semantics and accessible names, mobile overflow, dialog semantics, automatic modal focus, Escape dismissal, disabled-state semantics and the live announcement region.
 
 ### 10,000-profile background-mechanics stress gate
 
-The current background systems were additionally tested across **10,000 simulated progression profiles**, split into ten isolated 1,000-profile Chromium batches. **All ten batches passed.**
+The background game systems remain covered by the validated **10,000-profile V28 stress gate**, split into ten isolated 1,000-profile Chromium batches. All ten passed with no tested invariant violations, progression/combat deadlocks or browser/runtime errors.
 
-Each batch fails automatically on browser/runtime errors, tested state-invariant violations or progression/combat deadlocks. The final gate completed with no batch triggering those conditions. It covers five player strategies, the full campaign, combat/retry behavior, equipment/crafting progression, all six kingdom depths, all four kingdom specializations, building tiers 1–3, kingdom combat/economy/war bonuses, Guild persistence and Kingdom persistence.
-
-See `STRESS_10000_V28.md` for the dedicated report. Earlier retained stress/audit history remains in `FINAL_STRESS_P01.md` and the `AUDIT_1000_*` files.
+V29 did not change background game-state mechanics, combat formulas, economy, progression, kingdom bonuses or Guild War resolution, so that stress result remains the current background-mechanics baseline. See `STRESS_10000_V28.md` for the dedicated report.
 
 ## Prototype boundary
 
