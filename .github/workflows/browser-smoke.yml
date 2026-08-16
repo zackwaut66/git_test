@@ -35,6 +35,7 @@ on:
       - 'guild-v23.css'
       - 'ui-v24.js'
       - 'ui-v24.css'
+      - 'ui-v24-fixes.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -182,6 +183,7 @@ jobs:
             guild-v23.css
             ui-v24.js
             ui-v24.css
+            ui-v24-fixes.css
             assets/
             icon.svg
             manifest.webmanifest
