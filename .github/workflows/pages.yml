@@ -1,5 +1,18 @@
 name: Deploy Ashen Marches
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'app.js'
+      - 'app.css'
+      - 'hunterhall-overrides.css'
+      - 'hunterhall-v2.js'
+      - 'assets/**'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'icon.svg'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
   contents: read
