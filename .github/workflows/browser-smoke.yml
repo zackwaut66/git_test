@@ -21,6 +21,8 @@ on:
       - 'storehouse-v16.css'
       - 'facilities-v17.js'
       - 'facilities-v17.css'
+      - 'hunters-v18.js'
+      - 'hunters-v18.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -28,6 +30,7 @@ on:
       - 'warden-smoke.mjs'
       - 'storehouse-smoke.mjs'
       - 'facilities-smoke.mjs'
+      - 'hunters-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -59,13 +62,15 @@ jobs:
         run: node storehouse-smoke.mjs
       - name: Run Infirmary and Scout Tower smoke test
         run: node facilities-smoke.mjs
+      - name: Run Hunter progression dossier smoke test
+        run: node hunters-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v17
+          name: prototype-audit-v18
           path: |
             audit-1000-results.json
             audit-title.png
@@ -92,12 +97,13 @@ jobs:
             forge-v16-preview.png
             infirmary-v17-preview.png
             scout-tower-v17-preview.png
+            hunter-dossier-v18-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v17
+          name: prototype-deploy-source-v18
           path: |
             index.html
             app.js
@@ -117,6 +123,8 @@ jobs:
             storehouse-v16.css
             facilities-v17.js
             facilities-v17.css
+            hunters-v18.js
+            hunters-v18.css
             assets/
             icon.svg
             manifest.webmanifest
