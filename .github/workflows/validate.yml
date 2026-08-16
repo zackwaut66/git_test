@@ -17,7 +17,7 @@ jobs:
           node --check v7.js
           node --check browser-smoke.mjs
           node --check audit-1000.mjs
-      - name: Verify active V7 build files
+      - name: Verify active build files
         run: |
           test -f index.html
           test -f app.js
@@ -27,7 +27,7 @@ jobs:
           test -f assets/hunter-vanguard-v2.svg
           test -f assets/hunter-duelist-v2.svg
           test -f assets/hunter-physician-v2.svg
-          grep -q 'app.js?v=7' index.html
-          grep -q 'v7.js?v=7' index.html
-          grep -q 'v7.css?v=7' index.html
+          grep -Eq 'app\.js\?v=[0-9]+' index.html
+          grep -Eq 'v7\.js\?v=[0-9]+' index.html
+          grep -Eq 'v7\.css\?v=[0-9]+' index.html
           grep -q 'v7-hunterhall' v7.js
