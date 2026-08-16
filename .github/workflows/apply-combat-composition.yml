@@ -1,0 +1,28 @@
+name: Apply 0.1c Combat Composition
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'combat-composition-p01c.py'
+      - '.github/workflows/apply-combat-composition.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply combat composition polish
+        run: python3 combat-composition-p01c.py
+      - name: Commit composition polish
+        run: |
+          if git diff --quiet -- app.js app.css; then
+            echo 'No composition changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js app.css
+          git commit -m 'Polish 0.1c combat composition'
+          git push
