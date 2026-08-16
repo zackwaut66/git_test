@@ -1,0 +1,46 @@
+name: V30 10000 Stress Gate
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app.js'
+      - 'guild-v23.js'
+      - 'kingdom-v27.js'
+      - 'strategy-v30.js'
+      - 'stress-10000-v28.mjs'
+      - 'stress-10000-v30.mjs'
+      - '.github/workflows/stress-10000-v30.yml'
+  workflow_dispatch:
+jobs:
+  stress:
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0,1,2,3,4,5,6,7,8,9]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
+      - name: Run 1,000-profile campaign, kingdom, guild and realm stress batch
+        env:
+          STRESS_BATCH: ${{ matrix.batch }}
+          STRESS_COUNT: 1000
+        run: node stress-10000-v30.mjs
+      - name: Upload stress batch reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stress-10000-v30-batch-${{ matrix.batch }}
+          path: |
+            stress-10000-v28-batch-${{ matrix.batch }}.json
+            stress-10000-v30-batch-${{ matrix.batch }}.json
+          if-no-files-found: warn
