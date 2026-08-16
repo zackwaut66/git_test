@@ -11,6 +11,21 @@ try{
   await page.locator('button[data-begin]').click();
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
+
+  // Hunter Hall V2: featured Hunter, illustrated hall, roster switching and equipment rail.
+  await page.locator('button[data-go="hunters"]').click();
+  await page.locator('.hh-hero').waitFor();
+  if(await page.locator('.hh-loadout button').count()!==4)throw new Error('Hunter Hall equipment rail did not render four slots.');
+  if((await page.locator('.hh-identity h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
+  const heroArt=await page.locator('.hh-character').evaluate(el=>getComputedStyle(el).backgroundImage);
+  const hallArt=await page.locator('.hh-backdrop').evaluate(el=>getComputedStyle(el).backgroundImage);
+  if(!heroArt.includes('hunter-vanguard-v2.svg'))throw new Error('Vanguard V2 illustration not loaded into featured presentation.');
+  if(!hallArt.includes('hunter-hall-interior-v2.svg'))throw new Error('Hunter Hall interior illustration not loaded.');
+  await page.screenshot({path:'hunterhall-preview.png',fullPage:true});
+  await page.locator('.hh-roster button[data-hunter="Duelist"]').click();
+  await page.waitForFunction(()=>document.querySelector('.hh-identity h1')?.textContent?.trim()==='DUELIST');
+  if(!(await page.locator('.hh-character').evaluate(el=>getComputedStyle(el).backgroundImage)).includes('hunter-duelist-v2.svg'))throw new Error('Roster selection did not switch featured Hunter art.');
+
   await page.locator('button[data-go="map"]').click();
   await page.locator('button[data-region="0"]').click();
   await page.locator('.battleview').waitFor();
@@ -37,6 +52,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1d mobile smoke passed: combat presentation, contextual result art, new-drop marking, direct stat comparison, set progress, and progression loop.');
+  console.log('0.1d mobile smoke passed: Hunter Hall V2, roster switching, combat presentation, contextual result art, new-drop marking, direct stat comparison, set progress, and progression loop.');
 }finally{await browser.close()}
-// CI trigger: Prototype 0.1d loot-comparison + set-chase validation.
