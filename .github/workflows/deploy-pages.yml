@@ -46,12 +46,8 @@ jobs:
         run: |
           mkdir -p _site/assets
           cp index.html _site/index.html
+          cp v5.html _site/v5.html
           cp app.js _site/app.js
-          cp app.css _site/app.css
-          cp overhaul-v4.js _site/overhaul-v4.js
-          cp overhaul-v4.css _site/overhaul-v4.css
-          cp hunterhall-v3.js _site/hunterhall-v3.js
-          cp hunterhall-v3.css _site/hunterhall-v3.css
           cp icon.svg _site/icon.svg
           cp manifest.webmanifest _site/manifest.webmanifest
           cp assets/hunter-vanguard-v2.svg _site/assets/hunter-vanguard-v2.svg
