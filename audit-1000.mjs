@@ -6,7 +6,7 @@ const errors=[];page.on('pageerror',e=>errors.push(`pageerror: ${e.message}`));p
 await page.addInitScript(()=>localStorage.clear());
 await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
 await page.screenshot({path:'audit-title.png'});
-await page.getByRole('button',{name:'BEGIN THE MARCH',exact:true}).click();await page.screenshot({path:'audit-enclave.png'});
+await page.locator('button[data-begin]').click();await page.screenshot({path:'audit-enclave.png'});
 await page.locator('button[data-go="map"]').click();await page.screenshot({path:'audit-map.png'});
 await page.evaluate(()=>Game.startBattle(0,{}));await page.screenshot({path:'audit-combat.png'});
 await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});await page.screenshot({path:'audit-result.png'});
