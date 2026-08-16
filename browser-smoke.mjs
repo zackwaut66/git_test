@@ -13,10 +13,10 @@ try{
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
 
-  // V7 Hunter Hall: generated character art must decode and switch with the roster.
+  // Hunter Hall: generated character art must decode and switch with the roster.
   await page.locator('button[data-go="hunters"]').click();
   await page.locator('.v7-hunterhall').waitFor();
-  if(await page.locator('.v7-loadout button').count()!==4)throw new Error('V7 Hunter Hall did not render four equipment slots.');
+  if(await page.locator('.v7-loadout button').count()!==4)throw new Error('Hunter Hall did not render four equipment slots.');
   if((await page.locator('.v7-name h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
   const decoded=await page.evaluate(async()=>{
     const out={};
@@ -42,14 +42,26 @@ try{
   await page.locator('.v7-roster button[data-v7-hunter="Vanguard"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='VANGUARD');
 
+  // V8 combat: actual Hunter art + illustrated Farmstead enemies/background.
   await page.locator('button[data-go="map"]').click();
   await page.locator('button[data-region="0"]').click();
+  if(await page.locator('.eventview').count())await page.locator('[data-event="safe"]').click();
   await page.locator('.battleview').waitFor();
   await page.locator('.battlecallout').waitFor();
   await page.locator('.combatvitals').waitFor();
-  if(await page.locator('.enemyformation .battleunit').count()<3)throw new Error('Enemy formation art did not render.');
-  if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation art did not render.');
+  await page.waitForFunction(()=>document.querySelector('.battleview')?.dataset.v8==='1');
+  if(await page.locator('.enemyformation .battleunit').count()<3)throw new Error('Enemy formation did not render.');
+  if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation did not render.');
+  const illustratedAllies=page.locator('.allyformation .battleunit.v8-ally-art');
+  if(await illustratedAllies.count()<3)throw new Error('Generated Hunter art was not bound into combat formation.');
+  const farmBg=await page.locator('.battlescene').evaluate(el=>getComputedStyle(el).backgroundImage);
+  if(!farmBg.includes('battle-farmstead-v1.svg'))throw new Error('Illustrated Farmstead combat background did not load.');
+  const enemyArt=await page.locator('.enemyformation .battleunit').evaluateAll(els=>els.map(el=>({name:el.querySelector('b')?.textContent||'',art:getComputedStyle(el).getPropertyValue('--unit-art')})));
+  const required=['Carrion Scavenger','Ash Hound','Farmstead Lurker'];
+  for(const name of required){const row=enemyArt.find(x=>x.name===name);if(!row||!row.art.includes('assets/enemy-'))throw new Error(`${name} illustrated combat art did not bind.`)}
   if(await page.locator('.abilities button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Combat ability tap target is below 44px.');
+  await page.screenshot({path:'combat-v8-preview.png',fullPage:true});
+
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
   await page.locator('.resultview').waitFor();
   await page.locator('.resultart .scene-farm').waitFor();
@@ -71,5 +83,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('V7 mobile smoke passed: generated Vanguard/Duelist/Physician art decoded and switched correctly; combat, loot, equipment, progression and Hall upgrade remain functional.');
+  console.log('V8 mobile smoke passed: generated Hunter art, illustrated Farmstead enemies/background, combat controls, loot, equipment and progression are functional.');
 }finally{await browser.close()}
