@@ -28,6 +28,7 @@ jobs:
           node --check objectives.js
           node --check results.js
           node --check tutorial.js
+          node --check lifecycle.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
