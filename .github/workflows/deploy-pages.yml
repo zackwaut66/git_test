@@ -44,8 +44,21 @@ jobs:
       - name: Prepare playable site
         if: steps.pages.outputs.enabled == 'true'
         run: |
-          mkdir -p _site
-          cp standalone.html _site/index.html
+          mkdir -p _site/assets
+          cp index.html _site/index.html
+          cp app.js _site/app.js
+          cp app.css _site/app.css
+          cp hunterhall-v2.js _site/hunterhall-v2.js
+          cp hunterhall-overrides.css _site/hunterhall-overrides.css
+          cp hunterhall-polish.css _site/hunterhall-polish.css
+          cp icon.svg _site/icon.svg
+          cp manifest.webmanifest _site/manifest.webmanifest
+          cp sw.js _site/sw.js
+          cp assets/hunter-vanguard-v2.svg _site/assets/hunter-vanguard-v2.svg
+          cp assets/hunter-duelist-v2.svg _site/assets/hunter-duelist-v2.svg
+          cp assets/hunter-physician-v2.svg _site/assets/hunter-physician-v2.svg
+          cp assets/hunter-hall-interior-v2.svg _site/assets/hunter-hall-interior-v2.svg
+          touch _site/.nojekyll
 
       - name: Setup Pages
         if: steps.pages.outputs.enabled == 'true'
