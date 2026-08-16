@@ -19,11 +19,13 @@ jobs:
           node --check progression.js
           node --check enclave-systems.js
           node --check loadout.js
+          node --check difficulty.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
         run: |
           test -f index.html
+          test -f icon.svg
           test -f style.css
           test -f events.css
           test -f systems.css
