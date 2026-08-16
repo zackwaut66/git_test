@@ -6,6 +6,9 @@
     if(!battle?.enemies||battle.tuned)return;
     const m=mods[i];
     battle.enemies.forEach(e=>{e.hp=Math.round(e.hp*m.hp);e.max=e.hp;e.atk+=m.atk});
+    const pieces=setCount();
+    if(pieces>=2){const core=battle.party.filter(p=>p.core);const share=5/Math.max(1,core.length);core.forEach(p=>p.atk+=share);battle.set2=true}
+    if(pieces>=4){battle.resolve=Math.min(100,battle.resolve+15);battle.set4=true}
     battle.tuned=true;
     render();
   };
