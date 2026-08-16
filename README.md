@@ -1,4 +1,4 @@
-# The Bell Beneath Ash — Prototype 0.1b
+# The Bell Beneath Ash — Prototype 0.1c
 
 Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable region is **The Ashen Marches**.
 
@@ -8,7 +8,7 @@ Enclave → prepare Hunters → fog-covered Marches → field discovery → form
 
 ## Active build
 
-The playable application is now consolidated into:
+The playable application is consolidated into:
 
 - `index.html`
 - `app.js`
@@ -18,10 +18,10 @@ The playable application is now consolidated into:
 
 Older Prototype 0.1 module files remain in the repository for history but are no longer loaded by the live application.
 
-## Implemented in 0.1b
+## Implemented through 0.1c
 
 - One-screen title/premise and mobile-first first-session flow
-- Persistent local browser save using a fresh 0.1b save version
+- Persistent local browser save; 0.1c preserves the validated 0.1b save key
 - Installable/offline-capable PWA shell
 - Spatial Enclave scene with Hunter Hall, Forge, Infirmary, Storehouse, Scout Tower and locked future Guild Hall
 - State-derived Directive system tied directly to progression gates
@@ -45,20 +45,25 @@ Older Prototype 0.1 module files remain in the repository for history but are no
 - Forge crafting and salvage economy
 - Coin, Iron and Salvage resources
 - Building upgrades with gameplay effects
+- More detailed scene SVGs for the Enclave, Farmstead, Causeway, Chapel, Warden and Marches map
+- Distinct Hunter/support silhouettes and more differentiated enemy silhouettes, including a quadruped Ash Hound and enlarged Warden
+- Combat-state callouts, selected-target reticle, Hunter/Threat meters and clearer ability intent labels
+- Front/back-row visual depth in combat composition
+- Contextual victory art using the actual cleared encounter environment
 - Mobile smoke testing and real-browser 1,000-playthrough audit in GitHub Actions
 
 ## Current audited difficulty
 
-The latest successful 1,000-run browser-connected audit produced:
+The latest successful 1,000-run browser-connected 0.1c audit produced:
 
-- Forsaken Farmstead: **99.9%** wins per attempt
-- Hollow Causeway: **67.2%**
-- Saint Orra Chapel: **62.5%**
-- Penitent Warden: **53.7%**
+- Forsaken Farmstead: **99.6%** wins per attempt
+- Hollow Causeway: **64.7%**
+- Saint Orra Chapel: **65.2%**
+- Penitent Warden: **55.7%**
 
-Across four automated behavior profiles, 936 / 1,000 complete progression runs defeated the Warden within the audit retry cap. The run recorded zero browser errors, zero tested state-invariant failures, and zero progression deadlocks.
+Across four automated behavior profiles, 946 / 1,000 complete progression runs defeated the Warden within the audit retry cap. The run recorded zero browser errors, zero tested state-invariant failures, and zero progression deadlocks.
 
-See `AUDIT_1000_P01B.md` for the full audit.
+See `AUDIT_1000_P01C.md` for the current audit. `AUDIT_1000_P01B.md` is retained as the previous tuning reference.
 
 ## Current development playtest
 
@@ -68,7 +73,7 @@ See `PLAYTEST.md` for the intended first-session route.
 
 ## Still ahead for Prototype 0.1 polish
 
-- Replace geometric/vector prototype stand-ins with distinctive illustrated 2D environments, Hunters and enemies
+- Replace the improved vector prototype art with final distinctive illustrated 2D assets when the art pipeline is ready
 - Continue tuning combat feel from human mobile play rather than simulation alone
 - Expand enemy/event/loot variety where it materially improves replayability
 - Refine equipment comparison and set-chase presentation
@@ -79,4 +84,4 @@ See `PLAYTEST.md` for the intended first-session route.
 
 Production accounts/backend persistence, real multiplayer/PvP servers, guild membership, scheduled Guild Wars, territory seasons, trading, monetization, ads and live-ops content volume.
 
-The repository is the working source of truth for Prototype 0.1b.
+The repository is the working source of truth for Prototype 0.1c.
