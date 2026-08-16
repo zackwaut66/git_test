@@ -44,6 +44,8 @@ on:
       - 'kingdom-v27.css'
       - 'kingdom-v28.js'
       - 'kingdom-v28.css'
+      - 'polish-v29.js'
+      - 'polish-v29.css'
       - 'assets/**'
       - '*-smoke.mjs'
       - 'audit-1000.mjs'
@@ -95,13 +97,15 @@ jobs:
         run: node kingdom-smoke.mjs
       - name: Run dynamic Enclave visual-growth smoke test
         run: node kingdom-visual-smoke.mjs
+      - name: Run V29 interaction polish smoke test
+        run: node polish-v29-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v28
+          name: prototype-audit-v29
           path: |
             audit-1000-results.json
             audit-title.png
@@ -153,7 +157,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v28
+          name: prototype-deploy-source-v29
           path: |
             index.html
             app.js
@@ -196,6 +200,8 @@ jobs:
             kingdom-v27.css
             kingdom-v28.js
             kingdom-v28.css
+            polish-v29.js
+            polish-v29.css
             assets/
             icon.svg
             manifest.webmanifest
