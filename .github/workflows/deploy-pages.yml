@@ -48,9 +48,8 @@ jobs:
           cp index.html _site/index.html
           cp app.js _site/app.js
           cp app.css _site/app.css
-          cp hunterhall-v2.js _site/hunterhall-v2.js
-          cp hunterhall-overrides.css _site/hunterhall-overrides.css
-          cp hunterhall-polish.css _site/hunterhall-polish.css
+          cp hunterhall-v3.js _site/hunterhall-v3.js
+          cp hunterhall-v3.css _site/hunterhall-v3.css
           cp icon.svg _site/icon.svg
           cp manifest.webmanifest _site/manifest.webmanifest
           cp sw.js _site/sw.js
