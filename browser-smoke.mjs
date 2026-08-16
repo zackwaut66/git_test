@@ -30,4 +30,4 @@ try{
   if(failures.length)throw new Error(failures.join('\n'));
   console.log('0.1b mobile smoke passed: title, directive, combat, multi-drop loot, equip, Hall upgrade, and Causeway unlock.');
 }finally{await browser.close()}
-// This smoke file is also the CI trigger used after automated balance patches.
+// CI trigger: tuned build + upgrade-sheet navigation regression.
