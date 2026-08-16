@@ -32,3 +32,4 @@ try{
   if(failures.length)throw new Error(failures.join('\n'));
   console.log('0.1b mobile smoke passed: actionable title, guided directive, first combat, multi-drop result, equip, Hall upgrade, and Causeway unlock.');
 }finally{await browser.close()}
+// This smoke file is also the CI trigger used after automated balance patches.
