@@ -29,6 +29,8 @@ on:
       - 'map-v20.css'
       - 'contracts-v21.js'
       - 'contracts-v21.css'
+      - 'huntmaster-v22.js'
+      - 'huntmaster-v22.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -40,6 +42,7 @@ on:
       - 'combat-controls-smoke.mjs'
       - 'map-intel-smoke.mjs'
       - 'contracts-smoke.mjs'
+      - 'huntmaster-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -79,13 +82,15 @@ jobs:
         run: node map-intel-smoke.mjs
       - name: Run post-Warden Hunt Board smoke test
         run: node contracts-smoke.mjs
+      - name: Run Last Toll mastery hunt smoke test
+        run: node huntmaster-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v21
+          name: prototype-audit-v22
           path: |
             audit-1000-results.json
             audit-title.png
@@ -117,12 +122,15 @@ jobs:
             map-v20-intel-preview.png
             hunt-board-v21-preview.png
             hunt-contract-v21-result.png
+            last-toll-v22-board.png
+            last-toll-v22-battle.png
+            last-toll-v22-result.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v21
+          name: prototype-deploy-source-v22
           path: |
             index.html
             app.js
@@ -150,6 +158,8 @@ jobs:
             map-v20.css
             contracts-v21.js
             contracts-v21.css
+            huntmaster-v22.js
+            huntmaster-v22.css
             assets/
             icon.svg
             manifest.webmanifest
