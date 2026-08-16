@@ -23,12 +23,12 @@ try{
   const track=await page.locator('.hunter-xp-track').evaluate(el=>parseFloat(getComputedStyle(el).width));
   const pct=Math.round(width/track*100);
   if(pct<30||pct>33)throw new Error(`V18 XP bar expected about 31%, got ${pct}%.`);
-  await page.locator('button[data-hunter="Physician"]').click();
-  const physician=page.locator('.hunter-progression-v18');
-  await physician.waitFor();
-  text=await physician.innerText();
-  if(!text.includes('PHYSICIAN')||!text.includes('FIELD TREATMENT · 35 RESOLVE'))throw new Error('V18 Hunter dossier did not refresh when changing selection.');
+  await page.locator('button[data-v7-hunter="Physician"]').click();
+  await page.waitForFunction(()=>document.querySelector('.hunter-progression-v18')?.textContent?.includes('PHYSICIAN'));
+  text=await page.locator('.hunter-progression-v18').innerText();
+  if(!text.includes('FIELD TREATMENT · 35 RESOLVE'))throw new Error('V18 Hunter dossier did not refresh when changing selection.');
+  if(await page.locator('.hunter-progression-v18').evaluate(el=>el.getBoundingClientRect().width)>390)throw new Error('V18 Hunter dossier overflows the mobile viewport.');
   await page.screenshot({path:'hunter-dossier-v18-preview.png',fullPage:true});
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('V18 Hunter progression smoke passed: XP progress and selected-Hunter tactical doctrine refresh correctly on mobile.');
+  console.log('V18 Hunter progression smoke passed: XP progress and selected-Hunter tactical doctrine refresh correctly through the illustrated roster on mobile.');
 }finally{await browser.close()}
