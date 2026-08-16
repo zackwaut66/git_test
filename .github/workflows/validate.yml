@@ -27,6 +27,7 @@ jobs:
           node --check navigation.js
           node --check objectives.js
           node --check results.js
+          node --check tutorial.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
@@ -43,6 +44,7 @@ jobs:
           test -f preparation.css
           test -f objectives.css
           test -f results.css
+          test -f tutorial.css
           test -f manifest.webmanifest
       - name: Simulate 100,000 expeditions
         run: node balance-test.js
