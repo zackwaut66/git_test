@@ -13,20 +13,32 @@ try{
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
 
-  // V7 Hunter Hall: one featured Hunter, readable roster, four loadout targets, full engine intact.
+  // V7 Hunter Hall: generated character art must decode and switch with the roster.
   await page.locator('button[data-go="hunters"]').click();
   await page.locator('.v7-hunterhall').waitFor();
   if(await page.locator('.v7-loadout button').count()!==4)throw new Error('V7 Hunter Hall did not render four equipment slots.');
   if((await page.locator('.v7-name h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
-  const heroArt=await page.locator('.v7-hero').evaluate(el=>getComputedStyle(el).backgroundImage);
+  const decoded=await page.evaluate(async()=>{
+    const out={};
+    for(const [key,label] of [['v','Vanguard'],['d','Duelist'],['p','Physician']]){
+      const data=window.__HART?.[key]||'';
+      out[label]=await new Promise(resolve=>{const img=new Image();img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight,bytes:data.length});img.onerror=()=>resolve(null);img.src=`data:image/webp;base64,${data}`;});
+    }
+    return out;
+  });
+  for(const [name,meta] of Object.entries(decoded)){if(!meta||meta.width<100||meta.height<150||meta.bytes<10000)throw new Error(`${name} generated art payload failed to decode.`)}
   const hallArt=await page.locator('.v7-hall-bg').evaluate(el=>getComputedStyle(el).backgroundImage);
-  if(!heroArt.includes('hunter-vanguard-v2.svg'))throw new Error('Vanguard illustration not loaded into V7 presentation.');
   if(!hallArt.includes('hunter-hall-interior-v2.svg'))throw new Error('Hunter Hall environment not loaded.');
   if(await page.locator('.v7-roster button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter roster tap target is below 44px.');
+  const heroUses=async key=>page.locator('.v7-hero').evaluate((el,k)=>getComputedStyle(el).backgroundImage.includes((window.__HART?.[k]||'').slice(0,48)),key);
+  if(!await heroUses('v'))throw new Error('Generated Vanguard art is not bound to the featured Hunter.');
   await page.screenshot({path:'hunterhall-preview.png',fullPage:true});
   await page.locator('.v7-roster button[data-v7-hunter="Duelist"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='DUELIST');
-  if(!(await page.locator('.v7-hero').evaluate(el=>getComputedStyle(el).backgroundImage)).includes('hunter-duelist-v2.svg'))throw new Error('Roster selection did not switch featured Hunter art.');
+  if(!await heroUses('d'))throw new Error('Roster selection did not switch to generated Duelist art.');
+  await page.locator('.v7-roster button[data-v7-hunter="Physician"]').click();
+  await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='PHYSICIAN');
+  if(!await heroUses('p'))throw new Error('Roster selection did not switch to generated Physician art.');
   await page.locator('.v7-roster button[data-v7-hunter="Vanguard"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='VANGUARD');
 
@@ -59,5 +71,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('V7 mobile smoke passed: readable/tappable UI, Hunter Hall, combat, loot, equipment, progression and Hall upgrade all remain functional.');
+  console.log('V7 mobile smoke passed: generated Vanguard/Duelist/Physician art decoded and switched correctly; combat, loot, equipment, progression and Hall upgrade remain functional.');
 }finally{await browser.close()}
