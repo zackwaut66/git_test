@@ -11,6 +11,8 @@ on:
       - 'v7-art-polish.css'
       - 'combat-v8.js'
       - 'combat-v8.css'
+      - 'map-v9.css'
+      - 'enclave-v10.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
@@ -40,7 +42,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v8
+          name: prototype-audit-v10
           path: |
             audit-1000-results.json
             audit-title.png
@@ -49,14 +51,16 @@ jobs:
             audit-combat.png
             audit-result.png
             audit-inventory.png
+            enclave-v10-preview.png
             hunterhall-preview.png
+            map-v9-preview.png
             combat-v8-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v8
+          name: prototype-deploy-source-v10
           path: |
             index.html
             app.js
@@ -66,6 +70,8 @@ jobs:
             v7-art-polish.css
             combat-v8.js
             combat-v8.css
+            map-v9.css
+            enclave-v10.css
             assets/
             icon.svg
             manifest.webmanifest
