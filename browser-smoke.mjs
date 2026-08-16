@@ -17,13 +17,13 @@ try{
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
 
   const enclaveBg=await page.locator('.worldscene').evaluate(el=>getComputedStyle(el).backgroundImage);
-  if(!enclaveBg.includes('enclave-v10.svg'))throw new Error('Illustrated Enclave environment did not load.');
+  if(!enclaveBg.includes('enclave-v26.svg'))throw new Error('V26 illustrated Enclave environment did not load.');
   for(const key of ['hall','forge','infirmary','tower','store','guild']){
     const sel=key==='store'?'.hotspot.store':`.hotspot.${key}`;
     if(await page.locator(sel).count()!==1)throw new Error(`Enclave ${key} hotspot missing.`);
   }
   if(await page.locator('.hotspot.hall').evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter Hall hotspot is below 44px mobile tap target.');
-  await page.screenshot({path:'enclave-v10-preview.png',fullPage:true});
+  await page.screenshot({path:'enclave-v26-preview.png',fullPage:true});
 
   await page.locator('button[data-go="hunters"]').click();
   await page.locator('.v7-hunterhall').waitFor();
@@ -101,5 +101,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('Mobile smoke passed: illustrated title, Enclave, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
+  console.log('Mobile smoke passed: V26 Enclave, illustrated title, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
 }finally{await browser.close()}
