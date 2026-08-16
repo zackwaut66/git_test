@@ -18,10 +18,7 @@ try{
 
   const enclaveBg=await page.locator('.worldscene').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!enclaveBg.includes('enclave-v26.svg'))throw new Error('V26 illustrated Enclave environment did not load.');
-  for(const key of ['hall','forge','infirmary','tower','store','guild']){
-    const sel=key==='store'?'.hotspot.store':`.hotspot.${key}`;
-    if(await page.locator(sel).count()!==1)throw new Error(`Enclave ${key} hotspot missing.`);
-  }
+  for(const key of ['hall','forge','infirmary','tower','store','guild']){const sel=key==='store'?'.hotspot.store':`.hotspot.${key}`;if(await page.locator(sel).count()!==1)throw new Error(`Enclave ${key} hotspot missing.`)}
   if(await page.locator('.hotspot.hall').evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter Hall hotspot is below 44px mobile tap target.');
   await page.screenshot({path:'enclave-v26-preview.png',fullPage:true});
 
@@ -29,27 +26,18 @@ try{
   await page.locator('.v7-hunterhall').waitFor();
   if(await page.locator('.v7-loadout button').count()!==4)throw new Error('Hunter Hall did not render four equipment slots.');
   if((await page.locator('.v7-name h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
-  const decoded=await page.evaluate(async()=>{
-    const out={};
-    for(const [key,label] of [['v','Vanguard'],['d','Duelist'],['p','Physician']]){
-      const data=window.__HART?.[key]||'';
-      out[label]=await new Promise(resolve=>{const img=new Image();img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight,bytes:data.length});img.onerror=()=>resolve(null);img.src=`data:image/webp;base64,${data}`;});
-    }
-    return out;
-  });
-  for(const [name,meta] of Object.entries(decoded)){if(!meta||meta.width<100||meta.height<150||meta.bytes<10000)throw new Error(`${name} generated art payload failed to decode.`)}
+  const heroArt=async()=>page.locator('.v7-hero').evaluate(el=>getComputedStyle(el).backgroundImage);
+  let art=await heroArt();if(!art.includes('hunter-vanguard-v2.svg')||art.includes('data:image/webp'))throw new Error('Stable Vanguard vector art is not active.');
   const hallArt=await page.locator('.v7-hall-bg').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!hallArt.includes('hunter-hall-interior-v2.svg'))throw new Error('Hunter Hall environment not loaded.');
   if(await page.locator('.v7-roster button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter roster tap target is below 44px.');
-  const heroUses=async key=>page.locator('.v7-hero').evaluate((el,k)=>getComputedStyle(el).backgroundImage.includes((window.__HART?.[k]||'').slice(0,48)),key);
-  if(!await heroUses('v'))throw new Error('Generated Vanguard art is not bound to the featured Hunter.');
   await page.screenshot({path:'hunterhall-preview.png',fullPage:true});
   await page.locator('.v7-roster button[data-v7-hunter="Duelist"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='DUELIST');
-  if(!await heroUses('d'))throw new Error('Roster selection did not switch to generated Duelist art.');
+  art=await heroArt();if(!art.includes('hunter-duelist-v2.svg')||art.includes('data:image/webp'))throw new Error('Roster selection did not switch to stable Duelist vector art.');
   await page.locator('.v7-roster button[data-v7-hunter="Physician"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='PHYSICIAN');
-  if(!await heroUses('p'))throw new Error('Roster selection did not switch to generated Physician art.');
+  art=await heroArt();if(!art.includes('hunter-physician-v2.svg')||art.includes('data:image/webp'))throw new Error('Roster selection did not switch to stable Physician vector art.');
   await page.locator('.v7-roster button[data-v7-hunter="Vanguard"]').click();
   await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='VANGUARD');
 
@@ -67,7 +55,9 @@ try{
   if(await page.locator('.enemyformation .battleunit').count()<3)throw new Error('Enemy formation did not render.');
   if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation did not render.');
   const illustratedAllies=page.locator('.allyformation .battleunit.v8-ally-art');
-  if(await illustratedAllies.count()<3)throw new Error('Generated Hunter art was not bound into combat formation.');
+  if(await illustratedAllies.count()<3)throw new Error('Stable Hunter art was not bound into combat formation.');
+  const allyArt=await illustratedAllies.evaluateAll(els=>els.map(el=>getComputedStyle(el).getPropertyValue('--unit-art')));
+  if(allyArt.some(x=>!x.includes('assets/hunter-')||!x.includes('.svg')))throw new Error('A combat Hunter is not using stable vector art.');
   const farmBg=await page.locator('.battlescene').evaluate(el=>getComputedStyle(el).backgroundImage);
   if(!farmBg.includes('battle-farmstead-v1.svg'))throw new Error('Illustrated Farmstead combat background did not load.');
   const illustratedEnemies=page.locator('.enemyformation .battleunit.v8-enemy-art');
@@ -101,5 +91,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('Mobile smoke passed: V26 Enclave, illustrated title, Hunter Hall, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
+  console.log('Mobile smoke passed: V30 stable Hunter vectors, V26 Enclave, illustrated title, Marches, Farmstead combat, result, loot, equipment and progression are functional.');
 }finally{await browser.close()}
