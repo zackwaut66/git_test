@@ -25,6 +25,7 @@ jobs:
           node --check hunter-abilities.js
           node --check save-tools.js
           node --check navigation.js
+          node --check objectives.js
           node --check balance-test.js
           node --check sw.js
       - name: Verify required files
@@ -39,6 +40,7 @@ jobs:
           test -f enclave-systems.css
           test -f loadout.css
           test -f preparation.css
+          test -f objectives.css
           test -f manifest.webmanifest
       - name: Simulate 100,000 expeditions
         run: node balance-test.js
