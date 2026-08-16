@@ -8,6 +8,9 @@ on:
       - 'app.css'
       - 'v7.js'
       - 'v7.css'
+      - 'v7-art-polish.css'
+      - 'combat-v8.js'
+      - 'combat-v8.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
@@ -37,7 +40,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-1000-v7
+          name: prototype-audit-v8
           path: |
             audit-1000-results.json
             audit-title.png
@@ -47,18 +50,22 @@ jobs:
             audit-result.png
             audit-inventory.png
             hunterhall-preview.png
+            combat-v8-preview.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v7
+          name: prototype-deploy-source-v8
           path: |
             index.html
             app.js
             app.css
             v7.js
             v7.css
+            v7-art-polish.css
+            combat-v8.js
+            combat-v8.css
             assets/
             icon.svg
             manifest.webmanifest
