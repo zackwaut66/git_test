@@ -1,0 +1,36 @@
+name: Prototype 0.1 Final Stress Test
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app.js'
+      - 'app.css'
+      - 'stress-final.mjs'
+      - '.github/workflows/final-stress.yml'
+  workflow_dispatch:
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
+      - name: Run 10,000-profile final stress test
+        run: node stress-final.mjs
+      - name: Upload final stress evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prototype-p01-final-stress
+          path: |
+            final-stress-results.json
+            final-stress-combat.png
+          if-no-files-found: warn
