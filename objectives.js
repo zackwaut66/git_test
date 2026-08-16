@@ -10,8 +10,8 @@
     {title:'The Bell Must Stop',text:'Defeat the Penitent Warden.',done:()=>S.clears?.[3]>=1,reward:{coin:100,iron:30,salvage:20}}
   ];
   S.craftedItems??=0;
-  const oldCraft=window.craftItem;
-  if(oldCraft)window.craftItem=function(kind){const before=S.inventory.length;oldCraft(kind);if(S.inventory.length>before){S.craftedItems++;save();render()}};
+  const oldForgeCraft=window.forgeCraft;
+  if(oldForgeCraft)window.forgeCraft=function(){const before=S.inventory.length;oldForgeCraft();if(S.inventory.length>before){S.craftedItems++;save();render()}};
   function rewardText(r){return Object.entries(r).map(([k,v])=>`${v} ${k.toUpperCase()}`).join(' · ')}
   enclave=function(){
     const i=Math.min(S.objectiveStep,tasks.length),t=tasks[i];
