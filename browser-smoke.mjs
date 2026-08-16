@@ -23,7 +23,11 @@ try{
   await page.locator('.resultart .scene-farm').waitFor();
   await page.locator('button[data-secure]').click();
   await page.locator('.inventoryview').waitFor();
+  if(await page.locator('.setpips').count()!==2)throw new Error('Set chase progress did not render.');
+  if(await page.locator('.compareline').count()<3)throw new Error('Loot comparison lines did not render.');
+  if(await page.locator('.freshdrop').count()<3)throw new Error('Recovered drops were not marked as new.');
   await page.locator('button[data-equip][data-owner="Vanguard"]').first().click();
+  if(!(await page.locator('.compareline').first().innerText()).includes('CURRENTLY EQUIPPED'))throw new Error('Equipped-item comparison state did not update.');
   await page.locator('button[data-go="enclave"]').last().click();
   if(!(await page.locator('.directive').innerText()).includes('Strengthen the Hunter Hall'))throw new Error('Hall directive did not advance after equipping loot.');
   await page.locator('button[data-directive]').click();
@@ -33,6 +37,6 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1c mobile smoke passed: combat composition, contextual result art, visual HUD, progression, and loot loop.');
+  console.log('0.1d mobile smoke passed: combat presentation, contextual result art, new-drop marking, direct stat comparison, set progress, and progression loop.');
 }finally{await browser.close()}
-// CI trigger: Prototype 0.1c combat composition + contextual result-scene validation.
+// CI trigger: Prototype 0.1d loot-comparison + set-chase validation.
