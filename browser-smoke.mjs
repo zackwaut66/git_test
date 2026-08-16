@@ -8,25 +8,27 @@ try{
   await page.addInitScript(()=>localStorage.clear());
   await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
   await page.locator('button[data-begin]').waitFor();
+  if(await page.locator('button[data-begin]').evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Begin control is below 44px mobile tap target.');
   await page.locator('button[data-begin]').click();
   await page.locator('.directive').waitFor();
   if(!(await page.locator('.directive').innerText()).includes('Open the Western Road'))throw new Error('Opening directive missing.');
 
-  // Hunter Hall V2: featured Hunter, illustrated hall, roster switching and equipment rail.
+  // V7 Hunter Hall: one featured Hunter, readable roster, four loadout targets, full engine intact.
   await page.locator('button[data-go="hunters"]').click();
-  await page.locator('.hh-hero').waitFor();
-  if(await page.locator('.hh-loadout button').count()!==4)throw new Error('Hunter Hall equipment rail did not render four slots.');
-  if((await page.locator('.hh-identity h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
-  const heroArt=await page.locator('.hh-character').evaluate(el=>getComputedStyle(el).backgroundImage);
-  const hallArt=await page.locator('.hh-backdrop').evaluate(el=>getComputedStyle(el).backgroundImage);
-  if(!heroArt.includes('hunter-vanguard-v2.svg'))throw new Error('Vanguard V2 illustration not loaded into featured presentation.');
-  if(!hallArt.includes('hunter-hall-interior-v2.svg'))throw new Error('Hunter Hall interior illustration not loaded.');
+  await page.locator('.v7-hunterhall').waitFor();
+  if(await page.locator('.v7-loadout button').count()!==4)throw new Error('V7 Hunter Hall did not render four equipment slots.');
+  if((await page.locator('.v7-name h1').innerText()).trim()!=='VANGUARD')throw new Error('Featured Vanguard identity missing.');
+  const heroArt=await page.locator('.v7-hero').evaluate(el=>getComputedStyle(el).backgroundImage);
+  const hallArt=await page.locator('.v7-hall-bg').evaluate(el=>getComputedStyle(el).backgroundImage);
+  if(!heroArt.includes('hunter-vanguard-v2.svg'))throw new Error('Vanguard illustration not loaded into V7 presentation.');
+  if(!hallArt.includes('hunter-hall-interior-v2.svg'))throw new Error('Hunter Hall environment not loaded.');
+  if(await page.locator('.v7-roster button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Hunter roster tap target is below 44px.');
   await page.screenshot({path:'hunterhall-preview.png',fullPage:true});
-  await page.locator('.hh-roster button[data-hunter="Duelist"]').click();
-  await page.waitForFunction(()=>document.querySelector('.hh-identity h1')?.textContent?.trim()==='DUELIST');
-  if(!(await page.locator('.hh-character').evaluate(el=>getComputedStyle(el).backgroundImage)).includes('hunter-duelist-v2.svg'))throw new Error('Roster selection did not switch featured Hunter art.');
-  await page.locator('.hh-roster button[data-hunter="Vanguard"]').click();
-  await page.waitForFunction(()=>document.querySelector('.hh-identity h1')?.textContent?.trim()==='VANGUARD');
+  await page.locator('.v7-roster button[data-v7-hunter="Duelist"]').click();
+  await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='DUELIST');
+  if(!(await page.locator('.v7-hero').evaluate(el=>getComputedStyle(el).backgroundImage)).includes('hunter-duelist-v2.svg'))throw new Error('Roster selection did not switch featured Hunter art.');
+  await page.locator('.v7-roster button[data-v7-hunter="Vanguard"]').click();
+  await page.waitForFunction(()=>document.querySelector('.v7-name h1')?.textContent?.trim()==='VANGUARD');
 
   await page.locator('button[data-go="map"]').click();
   await page.locator('button[data-region="0"]').click();
@@ -35,6 +37,7 @@ try{
   await page.locator('.combatvitals').waitFor();
   if(await page.locator('.enemyformation .battleunit').count()<3)throw new Error('Enemy formation art did not render.');
   if(await page.locator('.allyformation .battleunit').count()<3)throw new Error('Hunter formation art did not render.');
+  if(await page.locator('.abilities button').first().evaluate(el=>el.getBoundingClientRect().height)<44)throw new Error('Combat ability tap target is below 44px.');
   await page.evaluate(()=>{Game.battle.enemies.forEach(e=>e.hp=0);Game.tick()});
   await page.locator('.resultview').waitFor();
   await page.locator('.resultart .scene-farm').waitFor();
@@ -56,5 +59,5 @@ try{
   const causeway=page.locator('button[data-region="1"]');
   if(await causeway.isDisabled())throw new Error('Causeway should be unlocked after first clear + equip + Hall Lv2.');
   if(failures.length)throw new Error(failures.join('\n'));
-  console.log('0.1d mobile smoke passed: Hunter Hall V2, roster switching, combat presentation, contextual result art, new-drop marking, direct stat comparison, set progress, and progression loop.');
+  console.log('V7 mobile smoke passed: readable/tappable UI, Hunter Hall, combat, loot, equipment, progression and Hall upgrade all remain functional.');
 }finally{await browser.close()}
