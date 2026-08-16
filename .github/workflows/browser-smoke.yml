@@ -4,12 +4,11 @@ on:
     branches: [main]
     paths:
       - 'index.html'
-      - '*.js'
-      - '**/*.js'
-      - '*.mjs'
-      - '**/*.mjs'
-      - '*.css'
-      - '**/*.css'
+      - 'app.js'
+      - 'app.css'
+      - 'browser-smoke.mjs'
+      - 'audit-1000.mjs'
+      - 'sw.js'
       - 'manifest.webmanifest'
       - '.github/workflows/browser-smoke.yml'
   workflow_dispatch:
@@ -26,7 +25,7 @@ jobs:
           npm install --no-save playwright
           npx playwright install --with-deps chromium
       - name: Start static server
-        run: python3 -m http.server 8080 >/tmp/ashen-http.log 2>&1 &
+        run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
       - name: Run mobile browser smoke test
         run: node browser-smoke.mjs
       - name: Run 1000-playthrough audit
@@ -35,10 +34,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-1000
+          name: prototype-audit-1000-p01b
           path: |
             audit-1000-results.json
-            audit-tutorial.png
+            audit-title.png
             audit-enclave.png
             audit-map.png
             audit-combat.png
