@@ -8,8 +8,12 @@ on:
   workflow_dispatch:
 jobs:
   stress:
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0,1,2,3,4,5,6,7,8,9]
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
@@ -21,12 +25,15 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Start static server
         run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
-      - name: Run 10,000 background-mechanics profiles
+      - name: Run 1,000-profile stress batch
+        env:
+          STRESS_BATCH: ${{ matrix.batch }}
+          STRESS_COUNT: 1000
         run: node stress-10000-v28.mjs
-      - name: Upload stress report
+      - name: Upload stress batch report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: stress-10000-v28-results
-          path: stress-10000-v28-results.json
+          name: stress-10000-v28-batch-${{ matrix.batch }}
+          path: stress-10000-v28-batch-${{ matrix.batch }}.json
           if-no-files-found: warn
