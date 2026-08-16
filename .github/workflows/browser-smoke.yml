@@ -29,3 +29,19 @@ jobs:
         run: python3 -m http.server 8080 >/tmp/ashen-http.log 2>&1 &
       - name: Run mobile browser smoke test
         run: node browser-smoke.mjs
+      - name: Run 1000-playthrough audit
+        run: node audit-1000.mjs
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prototype-audit-1000
+          path: |
+            audit-1000-results.json
+            audit-tutorial.png
+            audit-enclave.png
+            audit-map.png
+            audit-combat.png
+            audit-result.png
+            audit-inventory.png
+          if-no-files-found: warn
