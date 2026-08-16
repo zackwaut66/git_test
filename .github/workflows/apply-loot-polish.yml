@@ -1,0 +1,28 @@
+name: Apply 0.1d Loot Polish
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'loot-polish-p01d.py'
+      - '.github/workflows/apply-loot-polish.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply loot comparison and set chase polish
+        run: python3 loot-polish-p01d.py
+      - name: Commit loot polish
+        run: |
+          if git diff --quiet -- app.js app.css; then
+            echo 'No loot changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app.js app.css
+          git commit -m 'Polish 0.1d loot comparison and sets'
+          git push
