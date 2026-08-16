@@ -17,6 +17,8 @@ on:
       - 'title-v12.css'
       - 'causeway-v13.css'
       - 'chapel-v14.css'
+      - 'warden-v15.css'
+      - 'storehouse-v16.css'
       - 'assets/**'
       - 'sw.js'
       - 'manifest.webmanifest'
