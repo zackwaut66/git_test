@@ -33,6 +33,8 @@ on:
       - 'huntmaster-v22.css'
       - 'guild-v23.js'
       - 'guild-v23.css'
+      - 'ui-v24.js'
+      - 'ui-v24.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'causeway-smoke.mjs'
@@ -46,6 +48,7 @@ on:
       - 'contracts-smoke.mjs'
       - 'huntmaster-smoke.mjs'
       - 'guild-smoke.mjs'
+      - 'ui-smoke.mjs'
       - 'audit-1000.mjs'
       - 'manifest.webmanifest'
       - 'icon.svg'
@@ -89,13 +92,15 @@ jobs:
         run: node huntmaster-smoke.mjs
       - name: Run Guild Hall and Guild War smoke test
         run: node guild-smoke.mjs
+      - name: Run production UI smoke test
+        run: node ui-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-v23
+          name: prototype-audit-v24
           path: |
             audit-1000-results.json
             audit-title.png
@@ -133,12 +138,17 @@ jobs:
             guild-hall-v23-preview.png
             guild-war-v23-prep.png
             guild-war-v23-result.png
+            ui-v24-title.png
+            ui-v24-enclave.png
+            ui-v24-inventory.png
+            ui-v24-guild.png
+            ui-v24-combat.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source-v23
+          name: prototype-deploy-source-v24
           path: |
             index.html
             app.js
@@ -170,6 +180,8 @@ jobs:
             huntmaster-v22.css
             guild-v23.js
             guild-v23.css
+            ui-v24.js
+            ui-v24.css
             assets/
             icon.svg
             manifest.webmanifest
