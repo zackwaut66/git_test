@@ -6,13 +6,11 @@ on:
       - 'index.html'
       - 'app.js'
       - 'app.css'
-      - 'hunterhall-overrides.css'
-      - 'hunterhall-polish.css'
-      - 'hunterhall-v2.js'
+      - 'v7.js'
+      - 'v7.css'
       - 'assets/**'
       - 'browser-smoke.mjs'
       - 'audit-1000.mjs'
-      - 'sw.js'
       - 'manifest.webmanifest'
       - 'icon.svg'
       - '.github/workflows/browser-smoke.yml'
@@ -39,7 +37,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-audit-1000-p01d
+          name: prototype-audit-1000-v7
           path: |
             audit-1000-results.json
             audit-title.png
@@ -54,16 +52,14 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: prototype-deploy-source
+          name: prototype-deploy-source-v7
           path: |
             index.html
             app.js
             app.css
-            hunterhall-overrides.css
-            hunterhall-polish.css
-            hunterhall-v2.js
+            v7.js
+            v7.css
             assets/
             icon.svg
             manifest.webmanifest
-            sw.js
           if-no-files-found: error
