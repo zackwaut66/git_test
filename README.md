@@ -1,4 +1,4 @@
-# The Bell Beneath Ash — Prototype 0.1 · V21
+# The Bell Beneath Ash — Prototype 0.1 · V22
 
 Mobile-first 2D gothic post-apocalyptic strategy RPG/MMO-lite vertical slice. The first playable campaign is **The Ashen Marches**.
 
@@ -8,13 +8,13 @@ Development build:
 
 `https://raw.githack.com/zackwaut66/git_test/main/index.html`
 
-Immutable validated V21 snapshot:
+Immutable validated V22 snapshot:
 
-`https://rawcdn.githack.com/zackwaut66/git_test/b5249ec8f504b58045659af647a17926e02f479c/index.html`
+`https://rawcdn.githack.com/zackwaut66/git_test/9733f144288f8c884b7ebcd65e19dc33fff55e4d/index.html`
 
 ## Core loop
 
-Enclave → prepare Hunters → inspect March intelligence → expedition / field discovery → formation combat → loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → unlock deeper territory → defeat the Penitent Warden → take repeatable Hunt Board contracts.
+Enclave → prepare Hunters → inspect March intelligence → expedition / field discovery → formation combat → loot → compare / equip / salvage / craft → strengthen Hunters and Enclave → unlock deeper territory → defeat the Penitent Warden → take repeatable Hunt Board contracts → clear all three contract seals → challenge the Last Toll mastery hunt.
 
 ## Current playable build
 
@@ -36,6 +36,7 @@ The live entry point is `index.html`. It loads the validated gameplay core plus 
 - `combat-v19.js` / `combat-v19.css` — focused-threat intelligence and Tactical Pause
 - `map-v20.js` / `map-v20.css` — regional threat/reward intelligence dossiers
 - `contracts-v21.js` / `contracts-v21.css` — post-Warden Hunt Board and repeatable harder contracts
+- `huntmaster-v22.js` / `huntmaster-v22.css` — gated Last Toll mastery boss hunt
 - `assets/` — environments, enemy illustrations and Hunter-art runtime payloads
 
 ## Implemented
@@ -73,16 +74,19 @@ The live entry point is `index.html`. It loads the validated gameplay core plus 
 - Three repeatable Hunt Board contracts: Cinder Pack, Blackroad Tithe and Echo Choir
 - Contract-specific enemy HP/ATK scaling and starting Resolve pressure
 - Contract bonus resources, bonus equipment and persistent completion counts
+- Last Toll mastery hunt locked behind one completion of all three standard contracts
+- Empowered Warden Echo and Servitor scaling with additional Resolve/Dread pressure
+- Last Toll mastery bounty, guaranteed additional relic and persistent mastery completion count
 - Locked/future-facing Guild Hall
 - Local browser persistence
 - Illustrated title, Enclave, Hunter Hall, Marches, Farmstead, Causeway, Chapel and Warden presentation
 - Illustrated encounter enemies and Penitent Warden boss/support units
-- Contextual victory and contract-reward screens
+- Contextual victory, contract-reward and mastery-reward screens
 - Mobile-sized combat and management controls
 
 ## Validation
 
-The V21 browser gate passed in real Chromium at a 390×844 mobile viewport. It includes:
+The V22 browser gate passed in real Chromium at a 390×844 mobile viewport. It includes:
 
 - main mobile campaign smoke test
 - Hollow Causeway visual/gameplay smoke test
@@ -94,13 +98,14 @@ The V21 browser gate passed in real Chromium at a 390×844 mobile viewport. It i
 - Tactical Pause, paused targeting and automatic-resume combat test
 - March threat/reward intelligence test
 - post-Warden Hunt Board contract test
+- Last Toll mastery unlock/boss/reward test
 - 1,000-playthrough automated progression audit
 - audit-evidence packaging
 - deployable-source packaging
 
-The V21 Hunt Board gate verifies that contracts are actually playable after the Warden, enemy difficulty modifiers apply, contract combat can resolve through the normal battle system, bonus resources and equipment are awarded, completion counts persist, and the Hunt Board remains tappable within the existing phone-sized Enclave layout.
+The V22 mastery gate verifies that Last Toll remains locked until Cinder Pack, Blackroad Tithe and Echo Choir have each been completed; that the Warden Echo and Servitors receive mastery scaling; that Resolve/Dread pressure is applied; that the mastery fight resolves through the normal battle system; that the 100 Coin / 18 Iron / 18 Salvage bounty and guaranteed additional relic are awarded; and that mastery completions persist.
 
-The validator and GitHub Pages deployment are also green for the validated V21 snapshot.
+The validator and GitHub Pages deployment are green for the V22 game code, and the full V22 browser gate plus 1,000-playthrough audit passed on the immutable snapshot above.
 
 Earlier large stress testing exercised 10,000 complete progression profiles, inventory/economy mutation cycles, persistence reloads and real DOM navigation. See `FINAL_STRESS_P01.md` and the `AUDIT_1000_*` files for retained validation history.
 
