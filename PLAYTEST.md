@@ -1,10 +1,10 @@
-# The Bell Beneath Ash — Prototype 0.1b Phone Playtest
+# The Bell Beneath Ash — Prototype 0.1 Final Phone Playtest
 
 **Development playtest:**
 
 https://raw.githack.com/zackwaut66/git_test/main/index.html
 
-Prototype 0.1b starts from a fresh save key so the rebuilt first-session flow can be tested cleanly.
+Prototype 0.1 Final intentionally preserves the validated `bell-beneath-ash-p01b` browser save key so existing stress-tested persistence behavior is not disturbed. Clear the site's local data only when a clean first-session test is specifically needed.
 
 ## Current intended first session
 
@@ -17,17 +17,17 @@ Prototype 0.1b starts from a fresh save key so the rebuilt first-session flow ca
 7. Push through Saint Orra Chapel.
 8. Prepare for and fight the Penitent Warden.
 
-## What changed after the 1,000-run audit
+## Validated Prototype 0.1 Final changes
 
 - One-screen title/premise instead of an overlong briefing page.
 - Active objective chain is tied directly to progression gates, so it cannot remain behind the player.
-- Enclave is now an illustrated scene with building hotspots instead of a long stack of cards.
+- Enclave is an illustrated scene with building hotspots instead of a long stack of cards.
 - Map, Hunter Hall and combat are designed to fit the phone viewport rather than becoming multi-screen pages.
-- Normal victories now produce 3–4 equipment drops; the Warden produces 5.
+- Normal victories produce 3–4 equipment drops; the Warden produces 5.
 - Two functioning equipment sets are in the loot pool: Ashen Pilgrim and Mourning Watch.
-- The active application is consolidated into `app.js` + `app.css`; the old load-order override modules are no longer loaded.
-- The browser CI still runs a real mobile smoke route plus 1,000 full progression simulations after changes.
+- The active application is consolidated into `app.js` + `app.css`; older development modules are retained only as history.
+- Automated validation includes a real mobile browser smoke route plus progression simulation after changes.
 
-## Playtest focus
+## Human playtest focus
 
 Note anything that is confusing without explanation, any action that feels pointless, combat that feels trivial or unfair, loot that is uninteresting, text that is difficult to read, and any screen that still feels like a web dashboard instead of a game.
