@@ -18,6 +18,8 @@ on:
       - 'kingdom-v28.js'
       - 'strategy-v30.js'
       - 'foundation.js'
+      - 'backend-sync.js'
+      - 'backend-sync-smoke.mjs'
       - 'completion-smoke.mjs'
       - 'foundation-smoke.mjs'
       - 'stress-10000-v28.mjs'
