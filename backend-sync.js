@@ -1,0 +1,1 @@
+(()=>{'use strict';window.BellCloud={version:1};})();
