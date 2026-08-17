@@ -52,7 +52,6 @@ jobs:
           cp -R assets _site/assets
           touch _site/.nojekyll
 
-          # Fail deployment if any local script/stylesheet referenced by index.html is missing.
           python3 - <<'PY'
           import re
           from pathlib import Path
@@ -93,10 +92,11 @@ jobs:
           base="${PAGE_URL%/}/"
           for path in \
             "" \
-            "polish-v29.js?v=1" \
+            "preflight.js?v=1" \
+            "foundation.js?v=1" \
+            "strategy-v30.js?v=1" \
             "kingdom-v28.css?v=1" \
             "guild-v23.js?v=1" \
-            "assets/runtime/hv1.js?v=1" \
             "assets/enclave-v26.svg"
           do
             echo "Verifying ${base}${path}"
@@ -104,6 +104,8 @@ jobs:
               --output /tmp/live-asset "${base}${path}"
             test -s /tmp/live-asset
           done
-          curl --fail --silent --show-error --location --retry 6 --retry-delay 2 --retry-all-errors \
-            "${base}" | grep -q 'polish-v29.js?v=1'
-          echo "Live V29 playable and key runtime assets verified at ${base}"
+          html=$(curl --fail --silent --show-error --location --retry 6 --retry-delay 2 --retry-all-errors "${base}")
+          printf '%s' "$html" | grep -q 'preflight.js?v=1'
+          printf '%s' "$html" | grep -q 'foundation.js?v=1'
+          printf '%s' "$html" | grep -q 'strategy-v30.js?v=1'
+          echo "Live V30 foundation-hardened playable verified at ${base}"
