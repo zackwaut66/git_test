@@ -1,0 +1,54 @@
+name: Foundation Hardening Gate
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'app.js'
+      - 'combat-v8.js'
+      - 'facilities-v17.js'
+      - 'hunters-v18.js'
+      - 'combat-v19.js'
+      - 'map-v20.js'
+      - 'contracts-v21.js'
+      - 'huntmaster-v22.js'
+      - 'guild-v23.js'
+      - 'kingdom-v27.js'
+      - 'kingdom-v28.js'
+      - 'strategy-v30.js'
+      - 'foundation.js'
+      - 'foundation-smoke.mjs'
+      - 'completion-smoke.mjs'
+      - 'audit-1000.mjs'
+      - '.github/workflows/foundation-gate.yml'
+  workflow_dispatch:
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8080 >/tmp/bell-http.log 2>&1 &
+      - name: Verify save corruption recovery and full-profile reset
+        run: node foundation-smoke.mjs
+      - name: Verify integrated campaign kingdom guild realm persistence
+        run: node completion-smoke.mjs
+      - name: Run 1000-playthrough base progression audit
+        run: node audit-1000.mjs
+      - name: Upload foundation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-hardening-evidence
+          path: |
+            completion-v30-integrated.png
+            audit-1000-results.json
+          if-no-files-found: warn
