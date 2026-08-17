@@ -16,6 +16,7 @@ try{
     s.coin=2000;s.iron=1200;s.salvage=400;
     s.hunters.forEach(h=>{h.lv=Math.max(h.lv||1,8);h.xp=0});
     Game.debugSetState(s);
+    Game.save();
   });
 
   // Kingdom pillar: build an actual specialization and verify it feeds permanent power.
