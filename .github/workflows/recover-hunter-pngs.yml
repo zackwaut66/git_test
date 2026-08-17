@@ -1,0 +1,41 @@
+name: Recover Detailed Hunter PNGs
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'recover-hunter-pngs.mjs'
+      - '.github/workflows/recover-hunter-pngs.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Reconstruct original Hunter WebP sources
+        run: node recover-hunter-pngs.mjs
+      - name: Convert to Safari-safe PNG
+        run: |
+          for f in tmp-hunter-art/*.webp; do
+            out="assets/$(basename "${f%.webp}.png")"
+            ffmpeg -hide_banner -loglevel error -y -i "$f" -frames:v 1 -compression_level 9 "$out"
+            test -s "$out"
+          done
+          file assets/hunter-*-v30.png
+      - name: Commit generated Hunter PNGs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/hunter-vanguard-v30.png assets/hunter-duelist-v30.png assets/hunter-physician-v30.png
+          if git diff --cached --quiet; then
+            echo 'Hunter PNG assets already current.'
+          else
+            git commit -m 'Add Safari-safe detailed Hunter PNG art'
+            git push
+          fi
