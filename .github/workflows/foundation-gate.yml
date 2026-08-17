@@ -18,6 +18,9 @@ on:
       - 'kingdom-v28.js'
       - 'strategy-v30.js'
       - 'foundation.js'
+      - 'backend-sync.js'
+      - 'backend-sync.css'
+      - 'backend-sync-smoke.mjs'
       - 'foundation-smoke.mjs'
       - 'completion-smoke.mjs'
       - 'audit-1000.mjs'
@@ -43,6 +46,8 @@ jobs:
         run: node foundation-smoke.mjs
       - name: Verify integrated campaign kingdom guild realm persistence
         run: node completion-smoke.mjs
+      - name: Verify Supabase cloud client bootstrap and snapshot coverage
+        run: node backend-sync-smoke.mjs
       - name: Run 1000-playthrough base progression audit
         run: node audit-1000.mjs
       - name: Upload foundation evidence
