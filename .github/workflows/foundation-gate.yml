@@ -22,6 +22,7 @@ on:
       - 'audit-1000.mjs'
       - '.github/workflows/foundation-gate.yml'
   workflow_dispatch:
+# Blocking foundation gate: no outward feature work while this baseline is red.
 jobs:
   foundation:
     runs-on: ubuntu-latest
