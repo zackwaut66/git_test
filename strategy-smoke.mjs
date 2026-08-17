@@ -18,8 +18,8 @@ try{
  if(await page.locator('.realm-card-v30').count()!==1)throw new Error('Visible Realm summary card did not render in the Enclave.');
  await page.locator('[data-v30-realm]').click();
  const realm=page.locator('.realm-overlay-v30');await realm.waitFor();
- if(await realm.getByText('War Host').count()!==1)throw new Error('Persistent army screen missing.');
- if(await realm.getByText('Realm Rankings').count()!==1)throw new Error('Regional rankings missing.');
+ if((await realm.locator('.realm-army-v30 > header b').innerText()).trim()!=='War Host')throw new Error('Persistent army screen missing.');
+ if((await realm.locator('.realm-rankings-v30 > header b').innerText()).trim()!=='Realm Rankings')throw new Error('Regional rankings missing.');
  if(await realm.locator('[data-v30-schedule]').count()<3)throw new Error('Rival powers are not available for scheduled war.');
  const initial=await page.evaluate(()=>StrategyV30.load());
  const initialPower=await page.evaluate(()=>StrategyV30.armyPower());
