@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'preflight.js'
       - 'app.js'
       - 'app.css'
       - 'v7.js'
@@ -48,6 +49,7 @@ on:
       - 'polish-v29.css'
       - 'strategy-v30.js'
       - 'strategy-v30.css'
+      - 'foundation.js'
       - 'assets/**'
       - '*-smoke.mjs'
       - 'audit-1000.mjs'
@@ -169,6 +171,7 @@ jobs:
           name: prototype-deploy-source-v30
           path: |
             index.html
+            preflight.js
             app.js
             app.css
             v7.js
@@ -213,6 +216,7 @@ jobs:
             polish-v29.css
             strategy-v30.js
             strategy-v30.css
+            foundation.js
             assets/
             icon.svg
             manifest.webmanifest
