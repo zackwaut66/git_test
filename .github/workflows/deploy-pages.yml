@@ -94,6 +94,8 @@ jobs:
             "" \
             "preflight.js?v=1" \
             "foundation.js?v=1" \
+            "backend-sync.js?v=1" \
+            "backend-sync.css?v=1" \
             "strategy-v30.js?v=1" \
             "kingdom-v28.css?v=1" \
             "guild-v23.js?v=1" \
@@ -107,5 +109,6 @@ jobs:
           html=$(curl --fail --silent --show-error --location --retry 6 --retry-delay 2 --retry-all-errors "${base}")
           printf '%s' "$html" | grep -q 'preflight.js?v=1'
           printf '%s' "$html" | grep -q 'foundation.js?v=1'
+          printf '%s' "$html" | grep -q 'backend-sync.js?v=1'
           printf '%s' "$html" | grep -q 'strategy-v30.js?v=1'
-          echo "Live V30 foundation-hardened playable verified at ${base}"
+          echo "Live V30 foundation-hardened cloud-capable playable verified at ${base}"
