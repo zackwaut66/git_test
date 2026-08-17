@@ -5,8 +5,11 @@ const failures=[];
 page.on('pageerror',e=>failures.push(`pageerror: ${e.message}`));
 page.on('console',m=>{if(m.type()==='error')failures.push(`console: ${m.text()}`)});
 try{
-  await page.addInitScript(()=>{localStorage.clear();Math.random=()=>0.5});
+  // Keep deterministic combat/war rolls across reloads, but clear storage only once.
+  await page.addInitScript(()=>{Math.random=()=>0.5});
   await page.goto('http://127.0.0.1:8080/index.html',{waitUntil:'networkidle'});
+  await page.evaluate(()=>localStorage.clear());
+  await page.reload({waitUntil:'networkidle'});
   await page.locator('button[data-begin]').click();
 
   // Finish-line state: campaign cleared, resources available, Hunters developed.
