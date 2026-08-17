@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'preflight.js'
       - 'app.js'
       - 'combat-v8.js'
       - 'facilities-v17.js'
