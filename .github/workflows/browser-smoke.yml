@@ -103,6 +103,8 @@ jobs:
         run: node polish-v29-smoke.mjs
       - name: Run V30 realm strategy and stable Hunter smoke test
         run: node strategy-smoke.mjs
+      - name: Run integrated finish-line smoke test
+        run: node completion-smoke.mjs
       - name: Run 1000-playthrough audit
         run: node audit-1000.mjs
       - name: Upload audit evidence
@@ -158,6 +160,7 @@ jobs:
             kingdom-v28-enclave-fortress.png
             v30-hunter-stable.png
             v30-realm-war-result.png
+            completion-v30-integrated.png
           if-no-files-found: warn
       - name: Package deployable source
         if: success()
