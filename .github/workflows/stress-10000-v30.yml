@@ -3,10 +3,22 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
       - 'app.js'
+      - 'combat-v8.js'
+      - 'facilities-v17.js'
+      - 'hunters-v18.js'
+      - 'combat-v19.js'
+      - 'map-v20.js'
+      - 'contracts-v21.js'
+      - 'huntmaster-v22.js'
       - 'guild-v23.js'
       - 'kingdom-v27.js'
+      - 'kingdom-v28.js'
       - 'strategy-v30.js'
+      - 'foundation.js'
+      - 'completion-smoke.mjs'
+      - 'foundation-smoke.mjs'
       - 'stress-10000-v28.mjs'
       - 'stress-10000-v30.mjs'
       - '.github/workflows/stress-10000-v30.yml'
