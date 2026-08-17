@@ -4,7 +4,7 @@ import path from 'node:path';
 const groups={
   v:['hv1.js','hv2.js','hv3.js','hv4.js'],
   d:['hd1.js','hd2.js','hd3.js'],
-  p:['hp1.js','hp2.js','hp3.js','hp4.js','hpfix.js']
+  p:['hpfix.js']
 };
 const names={v:'hunter-vanguard-v30',d:'hunter-duelist-v30',p:'hunter-physician-v30'};
 fs.mkdirSync('tmp-hunter-art',{recursive:true});
