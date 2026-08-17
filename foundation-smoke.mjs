@@ -4,8 +4,10 @@ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true}
 const errors=[];page.on('pageerror',e=>errors.push(`pageerror:${e.message}`));page.on('console',m=>{if(m.type()==='error')errors.push(`console:${m.text()}`)});
 const url='http://127.0.0.1:8080/index.html';
 try{
-  await page.addInitScript(()=>localStorage.clear());
+  // Clean once. Do not use addInitScript here: these tests intentionally carry damaged storage through reloads.
   await page.goto(url,{waitUntil:'networkidle'});
+  await page.evaluate(()=>localStorage.clear());
+  await page.reload({waitUntil:'networkidle'});
   await page.locator('button[data-begin]').click();
   if(!await page.evaluate(()=>!!window.Foundation&&!!window.Game?.__foundationHardened&&!!window.BellPreflight))throw new Error('Foundation hardening/preflight layer not active.');
 
@@ -30,12 +32,13 @@ try{
   });
   await page.reload({waitUntil:'networkidle'});
   const recovered=await page.evaluate(()=>({
-    game:Game.debugState(),kingdom:KingdomV27.load(),guild:GuildV23.load(),realm:StrategyV30.load()
+    game:Game.debugState(),kingdom:KingdomV27.load(),guild:GuildV23.load(),realm:StrategyV30.load(),preflight:BellPreflight
   }));
   if(recovered.game.coin!==90||recovered.game.iron!==12||recovered.game.clears.some(Boolean))throw new Error('Base game did not recover from corrupt save.');
   if(recovered.kingdom.plots.length!==6||!recovered.kingdom.plots[0].reclaimed)throw new Error('Kingdom did not recover from corrupt save.');
   if(recovered.guild.formed!==false||recovered.guild.level!==1)throw new Error('Guild did not recover from corrupt save.');
   if(recovered.realm.prestige!==1000||recovered.realm.army.levy!==60)throw new Error('Realm did not recover from corrupt save.');
+  if(recovered.preflight.resetStores.length<5)throw new Error(`Corrupt JSON was not quarantined by preflight: ${recovered.preflight.resetStores.length} stores.`);
 
   // Valid JSON with plausible versions but broken nested structure must be rejected before modules boot.
   await page.evaluate(()=>{
@@ -62,11 +65,12 @@ try{
     localStorage.setItem('bell-beneath-ash-strategy-v30',JSON.stringify({version:999,prestige:-1}));
   });
   await page.reload({waitUntil:'networkidle'});
-  const versions=await page.evaluate(()=>({game:Game.debugState(),kingdom:KingdomV27.load(),realm:StrategyV30.load()}));
+  const versions=await page.evaluate(()=>({game:Game.debugState(),kingdom:KingdomV27.load(),realm:StrategyV30.load(),preflight:BellPreflight}));
   if(versions.game.version!==3||versions.game.coin!==90)throw new Error('Base save version fallback failed.');
   if(versions.kingdom.version!==1||versions.kingdom.plots.length!==6)throw new Error('Kingdom save version fallback failed.');
   if(versions.realm.version!==1||versions.realm.prestige!==1000)throw new Error('Realm save version fallback failed.');
+  if(versions.preflight.resetStores.length<3)throw new Error('Unsupported save versions were not rejected before boot.');
 
   if(errors.length)throw new Error(errors.join('\n'));
-  console.log('Foundation smoke passed: full-profile reset, corrupt JSON recovery, malformed-shape quarantine and save-version fallbacks are safe across base game, contracts, Kingdom, Guild and Realm.');
+  console.log('Foundation smoke passed: full-profile reset, corrupt JSON recovery, malformed-shape quarantine and save-version fallbacks are genuinely exercised across reloads.');
 }finally{await browser.close()}
