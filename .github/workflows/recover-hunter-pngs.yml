@@ -1,10 +1,5 @@
 name: Recover Detailed Hunter PNGs
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'recover-hunter-pngs.mjs'
-      - '.github/workflows/recover-hunter-pngs.yml'
   workflow_dispatch:
 permissions:
   contents: write
